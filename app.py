@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 """
-# CAPX Portfolio Optimization with Risk Aversion Adjustment 
+# CAPM Portfolio Optimization with Risk Aversion Adjustment 
 """
 
 #############################################
