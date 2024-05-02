@@ -7,10 +7,15 @@ import matplotlib.pyplot as plt
 # Title and file setup
 st.title("Portfolio Optimization Dashboard")
 data = pd.read_csv('inputs/index_data.csv')
-risk_free_data = pd.read_csv('inputs/risk_free_rate.csv')
 
-# Assume risk_free_rate.csv has a single column named 'Rate' with the risk-free rate as the first row
-risk_free_rate = risk_free_data['Rate'][0]
+# Read the risk-free rate from a text file
+try:
+    with open('inputs/risk_free_rate.txt', 'r') as file:
+        risk_free_rate = float(file.read().strip())
+    st.write("Risk-Free Rate Loaded:", risk_free_rate)
+except Exception as e:
+    st.error(f"Failed to load the risk-free rate: {e}")
+    st.stop()
 
 # Assuming columns are named 'Expected_Annual_Return' and 'Variance'
 expected_returns = data['Expected_Annual_Return']
@@ -64,7 +69,7 @@ ax.scatter(volatilities, returns, c='blue', label='Possible Portfolios')
 opt_return, opt_volatility = portfolio_metrics(optimal_weights)
 ax.scatter(opt_volatility, opt_return, color='red', label='Optimized Portfolio')
 ax.plot([0, max_sharpe_volatility], [risk_free_rate, max_sharpe_return], 'k--', label='Capital Market Line')
-ax.scatter(0, risk_free_rate, color='green', label='Risk-Free Rate')
+ax.scatter(0, risk_free_rate, color='green', marker='o', label='Risk-Free Rate')
 ax.set_xlabel('Volatility (Standard Deviation)')
 ax.set_ylabel('Expected Returns')
 ax.legend()
