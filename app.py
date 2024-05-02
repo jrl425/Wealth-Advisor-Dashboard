@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 st.title("Portfolio Optimization Dashboard")
 
 # Upload CSV file
-uploaded_file = st.file_uploader("index_data.csv", type="csv")
+uploaded_file = st.file_uploader("index_data", type="csv")
 if uploaded_file is not None:
     data = pd.read_csv(uploaded_file)
     # Assuming the columns are named 'Expected_Annual_Return' and 'Variance'
