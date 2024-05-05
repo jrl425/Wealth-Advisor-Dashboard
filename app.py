@@ -8,6 +8,14 @@ returns_data = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(returns_data.head())
 
+# Ensure that all data expected to be numeric is correctly typed
+# Assuming 'Total Expected Return (%)' is the column for expected returns calculations
+# Update the column name as necessary based on your actual data structure
+returns_data['Total Expected Return (%)'] = pd.to_numeric(returns_data['Total Expected Return (%)'], errors='coerce')
+
+# Calculate expected returns for each ticker
+expected_returns = returns_data['Total Expected Return (%)'].mean()
+
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv').values  # Ensure it's a numpy array
 st.write("\nCovariance Matrix Data Loaded:")
@@ -19,9 +27,6 @@ st.sidebar.subheader("Risk Aversion Survey")
 risk_aversion = st.sidebar.slider("Select your risk aversion level:", 1, 10, 3)
 st.sidebar.subheader("Investment Details")
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
-
-# Expected returns and portfolio variance function
-expected_returns = returns_data.mean().values  # This ensures it's in array form
 
 # Define the portfolio performance and utility functions
 def portfolio_performance(weights, returns, covariance_matrix):
