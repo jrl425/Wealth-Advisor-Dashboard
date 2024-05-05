@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 import plotly.graph_objs as go
 
@@ -11,7 +10,7 @@ df = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(df.head())
 
-# 10 year treasury
+# 10-year treasury
 risk_free_return = 0.04497
 risk_free_volatility = 0.0
 
@@ -102,4 +101,5 @@ for res in risk_level_results:
         text=[f"RA: {res['Risk Aversion']}<br>Return: {res['Expected Return']:.2%}<br>Volatility: {res['Volatility']:.2%}"],
         mode="markers",
         name=res["Risk Level"],
-        marker
+        marker=dict(
+            size=12 if res["Risk Level"] == selected_risk_level else 8
