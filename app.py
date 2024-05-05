@@ -5,7 +5,7 @@ from scipy.optimize import minimize
 import streamlit as st
 
 # Load the ticker returns data
-returns_data = pd.read_csv('inputs/index_data.csv')
+df = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(returns_data.head())
 
