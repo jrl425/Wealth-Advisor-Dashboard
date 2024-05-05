@@ -5,7 +5,7 @@ from scipy.optimize import minimize
 import streamlit as st
 
 # Load the ticker returns data
-df = pd.read_csv('index_data.csv')  # Check your path if needed
+df = pd.read_csv('inputs/index_data.csv')  # Check your path if needed
 covariance_matrix = pd.read_csv('cov_mat.csv', index_col=0).to_numpy()
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(df.head())
