@@ -15,8 +15,6 @@ st.dataframe(returns_data.head())
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
 # Assuming the first column of the returns data contains ticker symbols
-tickers = returns_data['Tickers']  # Update this depending on the structure of your returns data
-covariance_matrix.set_index(tickers, inplace=True)  # Set the tickers as the index of the covariance matrix
 st.write("\nCovariance Matrix Data Loaded:")
 st.dataframe(covariance_matrix.head())
 
