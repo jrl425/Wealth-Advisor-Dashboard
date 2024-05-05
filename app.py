@@ -2,31 +2,30 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from pypfopt.efficient_frontier import EfficientFrontier
-from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.expected_returns import mean_historical_return
+from pypfopt.risk_models import CovarianceShrinkage
 import plotly.graph_objects as go
 
 # Load data
-cov_mat = pd.read_csv('inputs/cov_mat.csv')
 index_data = pd.read_csv('inputs/index_data.csv')
-risk_free_rate = 0.05209
+cov_mat = pd.read_csv('inputs/cov_mat.csv')
 
 # Set up Streamlit layout
 st.set_page_config(layout="wide")
 st.sidebar.title("Risk Aversion Survey")
 risk_aversion = st.sidebar.slider("Select your risk aversion (1 to 5)", 1, 5, 3)
 
-# Calculate expected returns and covariances
+# Ensure returns and covariance matrix are aligned and correctly formatted
 returns = index_data.set_index('Ticker')['Expected_Annual_Return']
 covariance_matrix = cov_mat.values
 
 # Initialize Efficient Frontier
 ef = EfficientFrontier(returns, covariance_matrix, weight_bounds=(0,1))
-weights = ef.max_sharpe(risk_free_rate)
+weights = ef.max_sharpe(risk_free_rate=0.05209)
 cleaned_weights = ef.clean_weights()
 
 # Calculate performance metrics
-performance = ef.portfolio_performance(verbose=True, risk_free_rate=risk_free_rate)
+performance = ef.portfolio_performance(verbose=True, risk_free_rate=0.05209)
 
 # Plotting Efficient Frontier
 fig = go.Figure()
