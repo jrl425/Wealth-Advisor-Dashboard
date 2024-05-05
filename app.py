@@ -22,22 +22,26 @@ st.sidebar.subheader("Investment Details")
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
 
 # Utility function calculation
-def calculate_utility(returns, weights, cov_matrix, risk_aversion):
-    # Calculate the mean returns for each asset (column)
-    returns_mean = returns.mean().values
+# Calculate the mean returns for each asset (column)
+returns_mean = returns_data.mean().values
+
+# Ensure the number of columns in returns_data matches the dimensions of the covariance matrix
+if len(returns_data.columns) != covariance_matrix.shape[0] or len(returns_data.columns) != covariance_matrix.shape[1]:
+    st.error("Mismatch in number of assets and dimensions of covariance matrix")
+else:
+    # Create example weights assuming equal investment in each asset
+    example_weights = np.array([1 / len(returns_data.columns)] * len(returns_data.columns))
 
     # Calculate portfolio return as a dot product of weights and mean returns
-    portfolio_return = np.dot(weights, returns_mean)
+    portfolio_return = np.dot(example_weights, returns_mean)
 
     # Calculate portfolio variance as a double dot product involving the covariance matrix
-    portfolio_variance = np.dot(weights, np.dot(cov_matrix, weights))
+    portfolio_variance = np.dot(example_weights, np.dot(covariance_matrix.values, example_weights))
 
     # Calculate utility as expected return minus half the product of risk aversion coefficient and variance
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
 
-    return utility, portfolio_return, portfolio_variance
-
-# Test the utility function with some example weights
-# Ensure that the weights length matches the number of assets (columns in returns_data)
-example_weights = np.array([0.1] * len(returns_data.columns))
-utility, expected_return, variance = calculate_utility(returns_data, example_weights, covariance_matrix.values, risk_aversion)
+    # Display the results
+    st.write(f"Calculated Utility: {utility}")
+    st.write(f"Expected Return: {portfolio_return}")
+    st.write(f"Variance: {portfolio_variance}")
