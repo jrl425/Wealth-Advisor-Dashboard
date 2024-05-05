@@ -22,7 +22,7 @@ st.sidebar.subheader("Investment Details")
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
 
 # Calculate expected returns and portfolio variance
-expected_returns = returns_data.mean()
+expected_returns = returns_data['Total Expected Return (%)'].mean()
 portfolio_variance = lambda weights: weights.T @ covariance_matrix @ weights
 
 # Define the utility function
