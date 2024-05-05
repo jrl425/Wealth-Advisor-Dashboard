@@ -1,26 +1,19 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 
 # Load the ticker returns data
 returns_data = pd.read_csv('inputs/index_data.csv')
-# Convert all columns to float, handling non-numeric values gracefully
 returns_data = returns_data.apply(pd.to_numeric, errors='coerce')
-# Fill any NaN values that arise from non-numeric data with the mean of the column
 returns_data.fillna(returns_data.mean(), inplace=True)
-
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(returns_data.head())
 
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
-# Ensure covariance matrix is numeric
 covariance_matrix = covariance_matrix.apply(pd.to_numeric, errors='coerce')
-# Handling NaN by replacing them with zeroes might not be appropriate for a covariance matrix; consider an error or re-evaluation if NaNs exist
 covariance_matrix.fillna(0, inplace=True)
-
 st.write("\nCovariance Matrix Data Loaded:")
 st.dataframe(covariance_matrix.head())
 
@@ -33,10 +26,13 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 
 # Utility function calculation
 def calculate_utility(returns, weights, cov_matrix, risk_aversion):
-    # Convert inputs to numpy arrays for matrix operations
     weights = np.array(weights)
     returns_mean = returns.mean().values
     cov_matrix = np.array(cov_matrix)
+
+    st.write("Weights Shape:", weights.shape)
+    st.write("Returns Mean Shape:", returns_mean.shape)
+    st.write("Covariance Matrix Shape:", cov_matrix.shape)
 
     portfolio_return = np.dot(weights, returns_mean)
     portfolio_variance = np.dot(weights, np.dot(cov_matrix, weights))
