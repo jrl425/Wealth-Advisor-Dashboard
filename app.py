@@ -9,15 +9,14 @@ import streamlit as st
 #Code loads in data
 
 inputs/cov_mat.csv
-inputs/index_data.csv
 
 # Load the ticker returns data
-#returns_data = pd.read_csv('/mnt/data/index_data.csv')
+returns_data = pd.read_csv('inputs/index_data.csv')
 print("Ticker Returns Data Loaded:")
 print(returns_data.head())  # Display the first few rows to verify it's loaded correctly
 
 # Load the covariance matrix data
-#covariance_matrix = pd.read_csv('/mnt/data/cov_mat.csv')
+covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
 print("\nCovariance Matrix Data Loaded:")
 print(covariance_matrix.head())
 
