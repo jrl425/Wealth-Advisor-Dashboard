@@ -21,7 +21,7 @@ st.sidebar.header("User Inputs for Wealth Management")
 risk_levels = {
     "Very Low Risk": 73,
     "Low Risk": 54,
-    "Medium Risk": 35,
+    "Medium Risk": 36,
     "High Risk": 18,
     "Very High Risk": 1
 }
