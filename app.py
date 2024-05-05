@@ -30,12 +30,12 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 ######################################
 # Utility function calculation
 def calculate_utility(returns, weights, cov_matrix, risk_aversion):
-    # Calculate expected portfolio return and variance
-    portfolio_return = sum(weights[i] * returns[i] for i in range(len(returns)))
-    portfolio_variance = sum(weights[i] * weights[j] * cov_matrix[i][j] for i in range(len(returns)) for j in range(len(returns)))
-
-    # Calculate utility
+    portfolio_return = np.dot(weights, returns.mean())
+    portfolio_variance = np.dot(weights, np.dot(cov_matrix, weights))
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
-    return utility
+    return utility, portfolio_return, portfolio_variance
 
-######################################
+# Test the utility function with some example weights
+example_weights = np.array([0.1] * len(returns_data.columns))
+utility, expected_return, variance = calculate_utility(returns_data, example_weights, covariance_matrix.values, risk_aversion)
+st.write(f"Calculated Utility: {utility}, Expected Return: {expected_return}, Variance: {variance}")
