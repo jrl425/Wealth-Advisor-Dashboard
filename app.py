@@ -24,7 +24,7 @@ covariance_matrix = np.diag(df['Annualized_Std']**2)
 extended_cov_matrix = np.pad(covariance_matrix, ((0, 1), (0, 1)), mode='constant', constant_values=0)
 
 # Extended returns array including the risk-free asset
-extended_returns = np.append(df['Total_Expected_Return'].values, risk_free_return)
+extended_returns = np.append(df['Total Expected Return (%)'].values, risk_free_return)
 
 # Initial guess and bounds
 initial_guess = np.full(len(extended_returns), 1/len(extended_returns))
