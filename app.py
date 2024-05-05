@@ -1,42 +1,51 @@
+# Code to set up the basic structure of the Streamlit dashboard for the wealth management application
+dashboard_code = """
 import streamlit as st
 import pandas as pd
 import numpy as np
-from pypfopt import EfficientFrontier, risk_models, expected_returns
-import plotly.graph_objects as go
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models, expected_returns, plotting
+import matplotlib.pyplot as plt
 
-# Load the returns data and covariance matrix
-returns_data = pd.read_csv('inputs/index_data.csv')
-cov_matrix = pd.read_csv('inputs/cov_mat.csv', index_col=0)
+# Set up the page configuration and sidebar
+st.set_page_config(page_title='Wealth Management Dashboard', layout='wide', initial_sidebar_state='expanded')
+st.sidebar.title('Risk Aversion Survey')
+risk_aversion = st.sidebar.slider('Select your risk aversion level:', 1, 5, 3)
 
-# Convert annual returns to expected returns and covariance matrix
-mu = returns_data['Expected_Annual_Return']
-S = cov_matrix
+# Load data
+index_data_path = '/mnt/data/index_data.csv'
+cov_mat_path = '/mnt/data/cov_mat.csv'
+index_data = pd.read_csv(index_data_path)
+cov_matrix = pd.read_csv(cov_mat_path, index_col=0)
 
-def optimize_portfolio(risk_aversion):
-    # Create the Efficient Frontier Object
-    ef = EfficientFrontier(mu, S)
-    # Maximize the Sharpe ratio, then calculate weights using the utility function
-    raw_weights = ef.max_sharpe()
-    cleaned_weights = ef.clean_weights()
-    performance = ef.portfolio_performance(verbose=True)
-    return cleaned_weights, performance
+# Read risk-free rate from file
+with open('inputs/risk_free_rate.txt', 'r') as file:
+    risk_free_rate = float(file.read().strip())
 
-# Streamlit interface
-st.title('Wealth Management Dashboard')
+# Calculate expected returns and the covariance matrix
+mu = expected_returns.mean_historical_return(index_data)
+S = risk_models.sample_cov(index_data)
 
-# User inputs for risk aversion
-risk_level = st.slider("Select your risk aversion level (1=Low, 5=High):", 1, 5, 3)
+# Setup Efficient Frontier
+ef = EfficientFrontier(mu, S)
+weights = ef.max_sharpe(risk_free_rate=risk_free_rate)
+cleaned_weights = ef.clean_weights()
 
-# Show the calculated optimal portfolio
-if st.button('Calculate Optimal Portfolio'):
-    weights, performance = optimize_portfolio(risk_level)
-    st.write("Portfolio Weights:", weights)
-    st.write("Expected Annual Return:", performance[0])
-    st.write("Annual Volatility:", performance[1])
-    st.write("Sharpe Ratio:", performance[2])
+# Performance metrics
+performance = ef.portfolio_performance(verbose=True, risk_free_rate=risk_free_rate)
 
-    # Visualizing the efficient frontier
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=[performance[1]], y=[performance[0]], mode='markers+text', 
-                             text=['Optimal Portfolio'], textposition='top center'))
-    st.plotly_chart(fig, use_container_width=True)
+# Plotting
+fig, ax = plt.subplots()
+plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
+
+# Display results
+st.pyplot(fig)
+st.write('Portfolio Weights:', cleaned_weights)
+st.write('Expected Annual Return, Volatility, Sharpe Ratio:', performance)
+
+# User interaction to display detailed portfolio information on hover (to be implemented)
+
+"""
+
+# Return the initial part of the dashboard code to ensure everything is set up correctly.
+dashboard_code
