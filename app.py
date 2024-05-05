@@ -11,12 +11,12 @@ df = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(df.head())
 
-risk_free_return = 0.05209
+risk_free_return = 0.04497
 risk_free_volatility = 0.0
 
 # Sidebar for user inputs
 st.sidebar.header("User Inputs for Wealth Management")
-risk_aversion = st.sidebar.slider("Select your risk aversion level:", 1, 100, 5)
+risk_aversion = st.sidebar.slider("Select your portfolio risk level:", 1, 100, 5)
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
 
 # Convert annualized standard deviation to covariance matrix
