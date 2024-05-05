@@ -7,6 +7,7 @@ import plotly.graph_objs as go
 # Title and file setup
 st.title("Portfolio Optimization Dashboard")
 data = pd.read_csv('inputs/index_data.csv')
+covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
 
 # Read the risk-free rate from a text file
 try:
@@ -19,7 +20,6 @@ except Exception as e:
 
 # Assuming columns are named 'Expected_Annual_Return' and 'Variance'
 expected_returns = data['Expected_Annual_Return']
-variances = data['Variance']
 tickers = data['Ticker']
 
 # Sidebar for risk aversion
@@ -30,7 +30,7 @@ with st.sidebar:
 # Functions to calculate portfolio metrics and utility
 def portfolio_metrics(weights):
     E_R = np.dot(weights, expected_returns)
-    variance = np.dot(weights, np.dot(np.diag(variances), weights))
+    variance = np.dot(weights, np.dot(covariance_matrix, weights))  # Using the full covariance matrix
     return E_R, variance
 
 def negative_utility(weights):
