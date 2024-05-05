@@ -28,7 +28,6 @@ risk_aversion = st.sidebar.slider("Select your risk aversion level:", 1, 5, 3)
 st.sidebar.subheader("Investment Details")
 # Input for investment amount
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
-#####################################
 
 ######################################
 # Utility function calculation
@@ -54,6 +53,28 @@ def calculate_utility(returns, weights, cov_matrix, risk_aversion):
     # Calculate utility
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
     return utility
+
+######################################
+# Portfolio performance calculation
+def portfolio_performance(weights, returns, cov_matrix):
+    """
+    Calculate the expected return and volatility of the portfolio.
+
+    Parameters:
+    - weights: np.array of portfolio weights for each asset.
+    - returns: np.array of expected returns for each asset.
+    - cov_matrix: np.array or DataFrame of the covariance matrix of asset returns.
+
+    Returns:
+    - tuple of portfolio return and portfolio volatility.
+    """
+    # Calculate expected portfolio return
+    portfolio_return = np.dot(weights, returns)
+    
+    # Calculate portfolio volatility (standard deviation of returns)
+    portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
+    
+    return portfolio_return, portfolio_volatility
 
 ######################################
 # Efficient Frontier Calculation
