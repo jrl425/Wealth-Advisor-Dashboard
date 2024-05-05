@@ -15,7 +15,7 @@ st.dataframe(returns_data.head())
 
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
-st.write(""\nCovariance Matrix Data Loaded:"")
+st.write("\nCovariance Matrix Data Loaded:")
 st.dataframe(covariance_matrix.head())
 
 #####################################
