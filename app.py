@@ -9,8 +9,8 @@ import streamlit as st
 #Code loads in data
 # Load the ticker returns data
 returns_data = pd.read_csv('inputs/index_data.csv')
-print("Ticker Returns Data Loaded:")
-print(returns_data.head())  # Display the first few rows to verify it's loaded correctly
+st.write("Ticker Returns Data Loaded:")
+st.dataframe(returns_data.head())
 
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
