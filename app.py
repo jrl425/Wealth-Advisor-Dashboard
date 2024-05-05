@@ -7,7 +7,7 @@ import streamlit as st
 # Load the ticker returns data
 df = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
-st.dataframe(returns_data.head())
+st.dataframe(df.head())
 
 risk_free_return = 0.05209
 risk_free_volatility = 0.0
