@@ -23,26 +23,25 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 
 # Utility function calculation
 # Calculate the mean returns for each asset (column)
-returns_mean = returns_data['Total Expected Return (%)'].mean()
-st.write(returns_mean)
+#returns_mean = returns_data['Total Expected Return (%)'].mean()
+def utility(weights, returns, cov_matrix, risk_aversion):
+    portfolio_return = np.dot(weights, returns.mean())
+    portfolio_variance = np.dot(weights, np.dot(cov_matrix, weights))
+    return -(portfolio_return - 0.5 * risk_aversion * portfolio_variance)  # Negative for minimization
 
-# # Ensure the number of columns in returns_data matches the dimensions of the covariance matrix
-# if len(returns_data.columns) != covariance_matrix.shape[0] or len(returns_data.columns) != covariance_matrix.shape[1]:
-#     st.error("Mismatch in number of assets and dimensions of covariance matrix")
-# else:
-#     # Create example weights assuming equal investment in each asset
-#     example_weights = np.array([1 / len(returns_data.columns)] * len(returns_data.columns))
+# Set initial guess and constraints
+num_assets = len(returns_data.columns)
+initial_guess = np.ones(num_assets) / num_assets
+bounds = tuple((0, 1) for asset in range(num_assets))  # Weights between 0 and 1
+constraints = ({'type': 'eq', 'fun': lambda weights: np.sum(weights) - 1})  # Sum of weights must be 1
 
-#     # Calculate portfolio return as a dot product of weights and mean returns
-#     portfolio_return = np.dot(example_weights, returns_mean)
+# Optimization
+result = minimize(utility, initial_guess, args=(returns_data, covariance_matrix.values, risk_aversion),
+                  method='SLSQP', bounds=bounds, constraints=constraints)
 
-#     # Calculate portfolio variance as a double dot product involving the covariance matrix
-#     portfolio_variance = np.dot(example_weights, np.dot(covariance_matrix.values, example_weights))
-
-#     # Calculate utility as expected return minus half the product of risk aversion coefficient and variance
-#     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
-
-#     # Display the results
-#     st.write(f"Calculated Utility: {utility}")
-#     st.write(f"Expected Return: {portfolio_return}")
-#     st.write(f"Variance: {portfolio_variance}")
+# Check results
+if result.success:
+    optimal_weights = result.x
+    st.write(f"Optimal Weights: {optimal_weights}")
+else:
+    st.write("Optimization did not converge")
