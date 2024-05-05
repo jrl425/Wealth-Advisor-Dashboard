@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+import streamlit as st
 
 # Load the ticker returns data
 returns_data = pd.read_csv('inputs/index_data.csv')
