@@ -6,7 +6,7 @@ import plotly.io as pio
 import streamlit as st
 from update_data_cache import get_data
 from pypfopt.efficient_frontier import EfficientFrontier
-
+ 
 
 ###########################################
 #Side bar code
