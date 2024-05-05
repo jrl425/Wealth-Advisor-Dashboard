@@ -7,6 +7,10 @@ import streamlit as st
 
 ####################################
 #Code loads in data
+
+inputs/cov_mat.csv
+
+
 # Load the ticker returns data
 #returns_data = pd.read_csv('/mnt/data/index_data.csv')
 print("Ticker Returns Data Loaded:")
