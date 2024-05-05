@@ -3,13 +3,16 @@ import pandas as pd
 import numpy as np
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.expected_returns import mean_historical_return
-from pypfopt.risk_models import sample_cov
+from pypfopt.risk_models import CovarianceShrinkage
 import plotly.graph_objects as go
 
-# Load data
+# Assuming 'prices' DataFrame contains the historical price data of assets
+# If you don't have this DataFrame, you'll need to obtain or simulate it
+# Load your actual data here
+# prices = pd.read_csv('path_to_prices.csv')
+
+# Load index data which might be used to validate or further process data (optional)
 index_data = pd.read_csv('inputs/index_data.csv')
-cov_mat = pd.read_csv('inputs/cov_mat.csv')
-risk_free_rate = 0.05209  # From your previous inputs or loaded from a file
 
 # Streamlit page configuration
 st.set_page_config(page_title="Wealth Management Dashboard", layout="wide")
@@ -20,24 +23,18 @@ with st.sidebar:
     risk_aversion = st.slider("Select your risk aversion (1 to 5 scale)", 1, 5, 3)
     leverage = st.slider("Maximum leverage you are willing to take on", 1, 10, 1)
 
-# Prepare data
-returns = index_data.set_index('Ticker')['Expected_Annual_Return']
-covariance_matrix = cov_mat.values
+# Calculate expected returns and the covariance matrix using shrinkage
+mu = mean_historical_return(prices)  # Annualized mean historical return
+S = CovarianceShrinkage(prices).ledoit_wolf()  # Shrinkage estimator
 
-# Check if covariance matrix is positive definite
-if np.all(np.linalg.eigvals(covariance_matrix) > 0):
-    st.write("Covariance matrix is positive definite.")
-else:
-    st.write("Covariance matrix is not positive definite.")
-
-# Initialize Efficient Frontier
-ef = EfficientFrontier(returns, covariance_matrix, weight_bounds=(0, 1))
+# Initialize Efficient Frontier with the shrunk covariance matrix
+ef = EfficientFrontier(mu, S, weight_bounds=(0, 1))
 
 # Optimization
 try:
-    weights = ef.max_sharpe(risk_free_rate)
+    weights = ef.max_sharpe()
     cleaned_weights = ef.clean_weights()
-    performance = ef.portfolio_performance(verbose=True, risk_free_rate=risk_free_rate)
+    performance = ef.portfolio_performance(verbose=True)
 except Exception as e:
     st.error(f"Optimization failed: {e}")
     st.stop()
