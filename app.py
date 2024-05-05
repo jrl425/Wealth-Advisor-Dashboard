@@ -32,5 +32,30 @@ st.sidebar.subheader("Investment Details")
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
 #####################################
 
+######################################
+#Utility function calculation
+def calculate_utility(returns, weights, cov_matrix, risk_aversion):
+    """
+    Calculate the utility of a portfolio based on risk aversion.
+
+    Parameters:
+    - returns: np.array of expected returns for each asset.
+    - weights: np.array of portfolio weights for each asset.
+    - cov_matrix: DataFrame or np.array of covariance matrix of asset returns.
+    - risk_aversion: float, the risk aversion coefficient.
+
+    Returns:
+    - Utility value of the portfolio.
+    """
+    # Calculate expected portfolio return
+    portfolio_return = np.dot(weights, returns)
+    
+    # Calculate portfolio variance
+    portfolio_variance = np.dot(weights.T, np.dot(cov_matrix, weights))
+    
+    # Calculate utility
+    utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
+    return utility
+##########################################
 
 
