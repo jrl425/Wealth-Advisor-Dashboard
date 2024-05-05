@@ -18,11 +18,20 @@ risk_free_volatility = 0.0
 # Sidebar for user inputs
 st.sidebar.header("User Inputs for Wealth Management")
 #risk_aversion = st.sidebar.slider("Select your portfolio risk level:", 1, 100, 5)
-risk_aversion = st.sidebar.selectbox(
+risk_levels = {
+    "Very Low Risk": 73,
+    "Low Risk": 54,
+    "Medium Risk": 35,
+    "High Risk": 18,
+    "Very High Risk": 1
+}
+selected_risk_level = st.sidebar.selectbox(
     "Select your portfolio risk level:",
-    options=["Very Low Risk", "Low Risk", "Medium Risk", "High Risk", "Very High Risk"],
-    format_func=lambda x: f"{x} (RA = { {'Very Low Risk': 73, 'Low Risk': 54, 'Medium Risk': 35, 'High Risk': 18, 'Very High Risk': 1}[x]})"
+    options=list(risk_levels.keys())
 )
+
+# Retrieve the integer risk aversion value corresponding to the selected risk level
+risk_aversion = risk_levels[selected_risk_level]
 
 
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
