@@ -104,7 +104,7 @@ for res in risk_level_results:
         x=[res["Volatility"]],
         y=[res["Expected Return"]],
         text=[f"RA: {res['Risk Aversion']}<br>Return: {res['Expected Return']:.2%}<br>Volatility: {res['Volatility']:.2%}"],
-        mode="markers+text",
+        mode="markers",
         name=res["Risk Level"],
         marker=dict(
             size=12 if res["Risk Level"] == selected_risk_level else 8,
