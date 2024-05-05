@@ -20,14 +20,15 @@ risk_aversion = st.sidebar.slider("Select your risk aversion (1 to 5)", 1, 5, 3)
 returns = index_data.set_index('Ticker')['Expected_Annual_Return']
 covariance_matrix = cov_mat.values
 
-# Initialize Efficient Frontier
+# Initialize Efficient Frontier with regularization to avoid numerical issues
 ef = EfficientFrontier(returns, covariance_matrix, weight_bounds=(0,1))
+ef.add_objective(objective_functions.L2_reg, gamma=0.1)  # Regularization
+
 try:
     weights = ef.max_sharpe(risk_free_rate=0.05209)
 except Exception as e:
-    st.write("Optimization failed, attempting with regularization.")
-    ef.add_objective(objective_functions.L2_reg, gamma=0.1)  # Regularization
-    weights = ef.max_sharpe(risk_free_rate=0.05209)
+    st.write("Optimization failed with max_sharpe, attempting min_volatility.")
+    weights = ef.min_volatility()  # Fallback strategy
 
 cleaned_weights = ef.clean_weights()
 
