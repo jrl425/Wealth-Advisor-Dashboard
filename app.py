@@ -8,13 +8,13 @@ returns_data = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
 st.dataframe(returns_data.head())
 
-# Ensure that all data expected to be numeric is correctly typed
-# Assuming 'Total Expected Return (%)' is the column for expected returns calculations
-# Update the column name as necessary based on your actual data structure
-returns_data['Total Expected Return (%)'] = pd.to_numeric(returns_data['Total Expected Return (%)'], errors='coerce')
-
-# Calculate expected returns for each ticker
-expected_returns = returns_data['Total Expected Return (%)'].mean()
+# Ensure that data for expected returns is numeric and deal with non-numeric data appropriately
+# Example assuming the column 'Total Expected Return (%)' contains expected returns
+if 'Total Expected Return (%)' in returns_data.columns:
+    returns_data['Total Expected Return (%)'] = pd.to_numeric(returns_data['Total Expected Return (%)'], errors='coerce')
+    expected_returns = returns_data['Total Expected Return (%)'].dropna().values
+else:
+    st.error('Expected return data column not found in the dataset.')
 
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv').values  # Ensure it's a numpy array
@@ -30,7 +30,7 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 
 # Define the portfolio performance and utility functions
 def portfolio_performance(weights, returns, covariance_matrix):
-    port_return = np.sum(weights * returns)
+    port_return = np.dot(weights, returns)
     port_volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
     return port_return, port_volatility
 
