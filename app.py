@@ -23,25 +23,26 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 
 # Utility function calculation
 # Calculate the mean returns for each asset (column)
-returns_mean = returns_data.mean().values
+returns_mean = returns_data['Total Expected Return (%)'].mean()
+st.write(returns_mean)
 
-# Ensure the number of columns in returns_data matches the dimensions of the covariance matrix
-if len(returns_data.columns) != covariance_matrix.shape[0] or len(returns_data.columns) != covariance_matrix.shape[1]:
-    st.error("Mismatch in number of assets and dimensions of covariance matrix")
-else:
-    # Create example weights assuming equal investment in each asset
-    example_weights = np.array([1 / len(returns_data.columns)] * len(returns_data.columns))
+# # Ensure the number of columns in returns_data matches the dimensions of the covariance matrix
+# if len(returns_data.columns) != covariance_matrix.shape[0] or len(returns_data.columns) != covariance_matrix.shape[1]:
+#     st.error("Mismatch in number of assets and dimensions of covariance matrix")
+# else:
+#     # Create example weights assuming equal investment in each asset
+#     example_weights = np.array([1 / len(returns_data.columns)] * len(returns_data.columns))
 
-    # Calculate portfolio return as a dot product of weights and mean returns
-    portfolio_return = np.dot(example_weights, returns_mean)
+#     # Calculate portfolio return as a dot product of weights and mean returns
+#     portfolio_return = np.dot(example_weights, returns_mean)
 
-    # Calculate portfolio variance as a double dot product involving the covariance matrix
-    portfolio_variance = np.dot(example_weights, np.dot(covariance_matrix.values, example_weights))
+#     # Calculate portfolio variance as a double dot product involving the covariance matrix
+#     portfolio_variance = np.dot(example_weights, np.dot(covariance_matrix.values, example_weights))
 
-    # Calculate utility as expected return minus half the product of risk aversion coefficient and variance
-    utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
+#     # Calculate utility as expected return minus half the product of risk aversion coefficient and variance
+#     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
 
-    # Display the results
-    st.write(f"Calculated Utility: {utility}")
-    st.write(f"Expected Return: {portfolio_return}")
-    st.write(f"Variance: {portfolio_variance}")
+#     # Display the results
+#     st.write(f"Calculated Utility: {utility}")
+#     st.write(f"Expected Return: {portfolio_return}")
+#     st.write(f"Variance: {portfolio_variance}")
