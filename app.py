@@ -4,6 +4,7 @@ import numpy as np
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 import streamlit as st
+from scipy.optimize import minimize
 
 ####################################
 #Code loads in data
@@ -56,6 +57,8 @@ def calculate_utility(returns, weights, cov_matrix, risk_aversion):
     # Calculate utility
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
     return utility
+
+
 ##########################################
 
 
