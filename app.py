@@ -81,56 +81,43 @@ else:
 
 ################################################################
 #Graph code 
-risk_levels = {
-    "Very Low Risk": {"RA": 73, "expected_return": 0.05, "std": 0.02},
-    "Low Risk": {"RA": 54, "expected_return": 0.06, "std": 0.03},
-    "Medium Risk": {"RA": 35, "expected_return": 0.07, "std": 0.04},
-    "High Risk": {"RA": 18, "expected_return": 0.08, "std": 0.06},
-    "Very High Risk": {"RA": 1, "expected_return": 0.10, "std": 0.10}
-}
+risk_level_results = []
+for level, ra in risk_levels.items():
+    result = minimize(minimize_function, initial_guess, args=(ra, extended_returns, extended_cov_matrix),
+                      method='SLSQP', bounds=bounds, constraints=constraints)
+    if result.success:
+        port_return, port_volatility = portfolio_performance(result.x, extended_returns, extended_cov_matrix)
+        risk_level_results.append({
+            "Risk Level": level,
+            "Risk Aversion": ra,
+            "Expected Return": port_return,
+            "Volatility": port_volatility,
+            "Weights": result.x
+        })
 
-# Selection box for risk levels
-selected_risk_level = st.sidebar.selectbox("Select your portfolio risk level:", options=list(risk_levels.keys()))
-
-# Retrieve data for plotting
-risk_aversion_values = [level["RA"] for level in risk_levels.values()]
-expected_returns = [level["expected_return"] for level in risk_levels.values()]
-std_devs = [level["std"] for level in risk_levels.values()]
-risk_labels = list(risk_levels.keys())
-
-# Create scatter plot
+# Create the Plotly scatter plot
 fig = go.Figure()
 
-# Add scatter points for all risk levels
-fig.add_trace(go.Scatter(
-    x=risk_aversion_values,
-    y=expected_returns,
-    mode='markers+text',
-    marker=dict(size=8, color='blue'),  # Normal points in blue
-    text=risk_labels,
-    hoverinfo='text+name',
-    hovertext=[f"Expected Return: {er*100:.2f}%, STD: {sd*100:.2f}%" for er, sd in zip(expected_returns, std_devs)],
-    name='Risk Level'
-))
+# Add scatter points for all risk aversion levels
+for res in risk_level_results:
+    fig.add_trace(go.Scatter(
+        x=[res["Volatility"]],
+        y=[res["Expected Return"]],
+        text=[f"RA: {res['Risk Aversion']}<br>Return: {res['Expected Return']:.2%}<br>Volatility: {res['Volatility']:.2%}"],
+        mode="markers+text",
+        name=res["Risk Level"],
+        marker=dict(
+            size=12 if res["Risk Level"] == selected_risk_level else 8,
+            symbol="star" if res["Risk Level"] == selected_risk_level else "circle"
+        )
+    ))
 
-# Highlight the selected risk level
-selected_ra = risk_levels[selected_risk_level]["RA"]
-selected_er = risk_levels[selected_risk_level]["expected_return"]
-fig.add_trace(go.Scatter(
-    x=[selected_ra],
-    y=[selected_er],
-    mode='markers',
-    marker=dict(size=12, color='red', symbol='star'),  # Highlighted point in red with star symbol
-    hoverinfo='text+name',
-    hovertext=[f"Selected - Expected Return: {selected_er*100:.2f}%, STD: {risk_levels[selected_risk_level]['std']*100:.2f}%"],
-    name='Selected Risk'
-))
-
-# Set graph attributes
+# Update layout to improve clarity
 fig.update_layout(
-    title="Portfolio Risk vs Expected Return",
-    xaxis_title="Risk Aversion (RA)",
+    title="Risk Aversion Levels: Expected Return vs. Volatility",
+    xaxis_title="Volatility (Standard Deviation)",
     yaxis_title="Expected Return",
+    legend_title="Risk Levels",
     hovermode="closest"
 )
 
