@@ -4,6 +4,7 @@ import numpy as np
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.expected_returns import mean_historical_return
 from pypfopt.risk_models import CovarianceShrinkage
+from pypfopt import objective_functions
 import plotly.graph_objects as go
 
 # Load data
@@ -21,7 +22,13 @@ covariance_matrix = cov_mat.values
 
 # Initialize Efficient Frontier
 ef = EfficientFrontier(returns, covariance_matrix, weight_bounds=(0,1))
-weights = ef.max_sharpe(risk_free_rate=0.05209)
+try:
+    weights = ef.max_sharpe(risk_free_rate=0.05209)
+except Exception as e:
+    st.write("Optimization failed, attempting with regularization.")
+    ef.add_objective(objective_functions.L2_reg, gamma=0.1)  # Regularization
+    weights = ef.max_sharpe(risk_free_rate=0.05209)
+
 cleaned_weights = ef.clean_weights()
 
 # Calculate performance metrics
