@@ -16,7 +16,7 @@ st.dataframe(returns_data.head())
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
 st.write("\nCovariance Matrix Data Loaded:")
-covariance_matrix.set_index('Ticker', inplace=True)
+#covariance_matrix.set_index('Ticker', inplace=True)
 st.dataframe(covariance_matrix.head())
 
 #####################################
