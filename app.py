@@ -11,9 +11,11 @@ st.write("Ticker Returns Data Loaded:")
 st.dataframe(returns_data.head())
 
 # Load the covariance matrix data
-covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
+covariance_matrix = pd.read_csv('inputs/cov_mat.csv', index_col=0)  # Adjust this if headers or indices are incorrect
 covariance_matrix = covariance_matrix.apply(pd.to_numeric, errors='coerce')
-covariance_matrix.fillna(0, inplace=True)
+if covariance_matrix.shape[0] != covariance_matrix.shape[1]:
+    st.error("Covariance matrix is not square: Check the data.")
+covariance_matrix.fillna(0, inplace=True)  # Consider whether filling NaNs with zeros is appropriate for your case
 st.write("\nCovariance Matrix Data Loaded:")
 st.dataframe(covariance_matrix.head())
 
