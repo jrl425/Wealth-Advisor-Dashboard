@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import minimize
 import plotly.graph_objs as go
 
-# Title and file setup
+# Title and file setup 
 st.title("Portfolio Optimization Dashboard")
 data = pd.read_csv('inputs/index_data.csv')
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv').to_numpy()  # Convert DataFrame to NumPy array directly
