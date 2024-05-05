@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
-import plotly.graph_objs as go
+import matplotlib.pyplot as plt
 
 # Title and file setup
 st.title("Portfolio Optimization Dashboard")
@@ -47,46 +47,30 @@ initial_weights = np.array([1 / len(tickers)] * len(tickers))
 result = minimize(negative_utility, initial_weights, method='SLSQP', bounds=bounds, constraints=constraints)
 optimal_weights = result.x
 
-# Calculate returns and volatility for the optimized portfolio
+# Display optimized weights (converted to percentages)
+st.write("Optimized Weights:", dict(zip(tickers, optimal_weights * 100)))
+st.write("Maximum Utility:", -result.fun)
+
+# Generate portfolios for the efficient frontier
+n_portfolios = 1000
+all_weights = np.random.dirichlet(np.ones(len(tickers)), n_portfolios)
+returns = [portfolio_metrics(weights)[0] for weights in all_weights]
+volatilities = [np.sqrt(portfolio_metrics(weights)[1]) for weights in all_weights]
+
+# Find the portfolio with the maximum Sharpe ratio (Tangency Portfolio)
+sharpe_ratios = [(r - risk_free_rate) / v for r, v in zip(returns, volatilities)]
+index_max_sharpe = np.argmax(sharpe_ratios)
+max_sharpe_return = returns[index_max_sharpe]
+max_sharpe_volatility = volatilities[index_max_sharpe]
+
+# Plotting the efficient frontier
+fig, ax = plt.subplots()
+ax.scatter(volatilities, returns, c='blue', label='Possible Portfolios')
 opt_return, opt_volatility = portfolio_metrics(optimal_weights)
-
-# Plotting the efficient frontier with Plotly
-fig = go.Figure()
-# Tangency Portfolio point
-fig.add_trace(go.Scatter(
-    x=[np.sqrt(opt_volatility)], 
-    y=[opt_return], 
-    mode='markers',
-    marker=dict(size=10, color='red'),
-    name='Optimized Portfolio',
-    text=[f'Std Dev: {np.sqrt(opt_volatility):.2f}, Expected Return: {opt_return:.2%}'],
-    hoverinfo='text+x+y'
-))
-
-# Line from risk-free rate to optimized portfolio (Capital Market Line)
-fig.add_trace(go.Scatter(
-    x=[0, np.sqrt(opt_volatility)],
-    y=[risk_free_rate, opt_return],
-    mode='lines',
-    line=dict(color='black', dash='dash'),
-    name='Capital Market Line'
-))
-
-# Add risk-free rate point
-fig.add_trace(go.Scatter(
-    x=[0],
-    y=[risk_free_rate],
-    mode='markers',
-    marker=dict(size=10, color='green'),
-    name='Risk-Free Rate'
-))
-
-fig.update_layout(
-    title='Efficient Frontier with Tangency Portfolio',
-    xaxis_title='Volatility (Standard Deviation)',
-    yaxis_title='Expected Returns',
-    legend_title='Legend',
-    hovermode='closest'
-)
-
-st.plotly_chart(fig, use_container_width=True)
+ax.scatter(opt_volatility, opt_return, color='red', label='Optimized Portfolio')
+ax.plot([0, max_sharpe_volatility], [risk_free_rate, max_sharpe_return], 'k--', label='Capital Market Line')
+ax.scatter(0, risk_free_rate, color='green', marker='o', label='Risk-Free Rate')
+ax.set_xlabel('Volatility (Standard Deviation)')
+ax.set_ylabel('Expected Returns')
+ax.legend()
+st.pyplot(fig)
