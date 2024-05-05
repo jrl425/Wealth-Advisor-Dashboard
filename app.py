@@ -3,11 +3,10 @@ import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
-import streamlit as st
 from scipy.optimize import minimize
 
 ####################################
-#Code loads in data
+# Code loads in data
 # Load the ticker returns data
 returns_data = pd.read_csv('inputs/index_data.csv')
 st.write("Ticker Returns Data Loaded:")
@@ -15,15 +14,16 @@ st.dataframe(returns_data.head())
 
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
+# Assuming the first column of the returns data contains ticker symbols
+tickers = returns_data.columns[1:]  # Update this depending on the structure of your returns data
+covariance_matrix.set_index(tickers, inplace=True)  # Set the tickers as the index of the covariance matrix
 st.write("\nCovariance Matrix Data Loaded:")
-#covariance_matrix.set_index('Ticker', inplace=True)
 st.dataframe(covariance_matrix.head())
 
 #####################################
 
-
 #####################################
-#Side bar code
+# Side bar code
 # Initialize the sidebar
 st.sidebar.header("User Inputs for Wealth Management")
 st.sidebar.subheader("Risk Aversion Survey")
@@ -35,7 +35,7 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 #####################################
 
 ######################################
-#Utility function calculation
+# Utility function calculation
 def calculate_utility(returns, weights, cov_matrix, risk_aversion):
     """
     Calculate the utility of a portfolio based on risk aversion.
@@ -59,7 +59,4 @@ def calculate_utility(returns, weights, cov_matrix, risk_aversion):
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
     return utility
 
-
 ##########################################
-
-
