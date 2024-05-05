@@ -17,8 +17,6 @@ st.write("\nCovariance Matrix Data Loaded:")
 st.dataframe(covariance_matrix.head())
 
 #####################################
-
-#####################################
 # Side bar code
 # Initialize the sidebar
 st.sidebar.header("User Inputs for Wealth Management")
@@ -32,24 +30,10 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 ######################################
 # Utility function calculation
 def calculate_utility(returns, weights, cov_matrix, risk_aversion):
-    """
-    Calculate the utility of a portfolio based on risk aversion.
+    # Calculate expected portfolio return and variance
+    portfolio_return = sum(weights[i] * returns[i] for i in range(len(returns)))
+    portfolio_variance = sum(weights[i] * weights[j] * cov_matrix[i][j] for i in range(len(returns)) for j in range(len(returns)))
 
-    Parameters:
-    - returns: np.array of expected returns for each asset.
-    - weights: np.array of portfolio weights for each asset.
-    - cov_matrix: DataFrame or np.array of covariance matrix of asset returns.
-    - risk_aversion: float, the risk aversion coefficient.
-
-    Returns:
-    - Utility value of the portfolio.
-    """
-    # Calculate expected portfolio return
-    portfolio_return = np.dot(weights, returns)
-    
-    # Calculate portfolio variance
-    portfolio_variance = np.dot(weights.T, np.dot(cov_matrix, weights))
-    
     # Calculate utility
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
     return utility
@@ -57,22 +41,9 @@ def calculate_utility(returns, weights, cov_matrix, risk_aversion):
 ######################################
 # Portfolio performance calculation
 def portfolio_performance(weights, returns, cov_matrix):
-    """
-    Calculate the expected return and volatility of the portfolio.
-
-    Parameters:
-    - weights: np.array of portfolio weights for each asset.
-    - returns: np.array of expected returns for each asset.
-    - cov_matrix: np.array or DataFrame of the covariance matrix of asset returns.
-
-    Returns:
-    - tuple of portfolio return and portfolio volatility.
-    """
-    # Calculate expected portfolio return
-    portfolio_return = np.dot(weights, returns)
-    
-    # Calculate portfolio volatility (standard deviation of returns)
-    portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
+    # Calculate expected portfolio return and volatility
+    portfolio_return = sum(weights[i] * returns[i] for i in range(len(returns)))
+    portfolio_volatility = np.sqrt(sum(weights[i] * weights[j] * cov_matrix[i][j] for i in range(len(returns)) for j in range(len(returns))))
     
     return portfolio_return, portfolio_volatility
 
@@ -89,11 +60,11 @@ def efficient_frontier(returns, cov_matrix, num_portfolios=100):
         portfolio_return, portfolio_volatility = portfolio_performance(weights, returns, cov_matrix)
         results[0, i] = portfolio_volatility
         results[1, i] = portfolio_return
-        # Calculate portfolio utility for given risk_aversion
         results[2, i] = calculate_utility(returns, weights, cov_matrix, risk_aversion)
     
     return results, weights_record
 
+######################################
 # Plotting the Efficient Frontier
 def plot_efficient_frontier(results):
     plt.scatter(results[0,:], results[1,:], c=results[2,:], cmap='viridis')
@@ -103,8 +74,9 @@ def plot_efficient_frontier(results):
     plt.colorbar(label='Utility')
     plt.show()
 
+######################################
 # Example usage
-returns = np.array(returns_data.iloc[0, 1:])  # Adjust indexing if necessary
-cov_matrix = covariance_matrix.values  # Assuming the covariance matrix is correctly formatted
+returns = np.array(returns_data.iloc[0, 1:].astype(float))  # Adjust indexing if necessary, ensure data type compatibility
+cov_matrix = np.array(covariance_matrix.values.astype(float))  # Ensure data type compatibility
 results, weights = efficient_frontier(returns, cov_matrix)
 plot_efficient_frontier(results)
