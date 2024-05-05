@@ -86,14 +86,17 @@ for level, ra in risk_levels.items():
     result = minimize(minimize_function, initial_guess, args=(ra, extended_returns, extended_cov_matrix),
                       method='SLSQP', bounds=bounds, constraints=constraints)
     if result.success:
-        port_return, port_volatility = portfolio_performance(result.x, extended_returns, extended_cov_matrix)
-        risk_level_results.append({
-            "Risk Level": level,
-            "Risk Aversion": ra,
-            "Expected Return": port_return,
-            "Volatility": port_volatility,
-            "Weights": result.x
-        })
+    port_return, port_volatility = portfolio_performance(result.x, extended_returns, extended_cov_matrix)
+    st.write(f"Optimized Portfolio for Risk Aversion {risk_aversion}:")
+    st.write(f"Expected Return: {port_return:.2%}, Volatility: {port_volatility:.2%}")
+    st.write("Portfolio Weights:")
+    tickers = df['Ticker'].tolist() + ['Risk-Free Asset']
+    for i, weight in enumerate(result.x):
+        if weight > 0.0001:  # Only display weights greater than 0.01%
+            st.write(f"{tickers[i]}: {weight*100:.2f}%")
+    else:
+        st.error("Optimization did not converge")
+
 
 # Create the Plotly scatter plot
 fig = go.Figure()
