@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
-from scipy.optimize import minimize
 
 ####################################
 # Code loads in data
@@ -14,7 +13,6 @@ st.dataframe(returns_data.head())
 
 # Load the covariance matrix data
 covariance_matrix = pd.read_csv('inputs/cov_mat.csv')
-# Assuming the first column of the returns data contains ticker symbols
 st.write("\nCovariance Matrix Data Loaded:")
 st.dataframe(covariance_matrix.head())
 
@@ -57,4 +55,35 @@ def calculate_utility(returns, weights, cov_matrix, risk_aversion):
     utility = portfolio_return - 0.5 * risk_aversion * portfolio_variance
     return utility
 
-##########################################
+######################################
+# Efficient Frontier Calculation
+def efficient_frontier(returns, cov_matrix, num_portfolios=100):
+    num_assets = len(returns)
+    results = np.zeros((3, num_portfolios))
+    weights_record = []
+    for i in range(num_portfolios):
+        weights = np.random.random(num_assets)
+        weights /= np.sum(weights)
+        weights_record.append(weights)
+        portfolio_return, portfolio_volatility = portfolio_performance(weights, returns, cov_matrix)
+        results[0, i] = portfolio_volatility
+        results[1, i] = portfolio_return
+        # Calculate portfolio utility for given risk_aversion
+        results[2, i] = calculate_utility(returns, weights, cov_matrix, risk_aversion)
+    
+    return results, weights_record
+
+# Plotting the Efficient Frontier
+def plot_efficient_frontier(results):
+    plt.scatter(results[0,:], results[1,:], c=results[2,:], cmap='viridis')
+    plt.title('Efficient Frontier')
+    plt.xlabel('Volatility (Risk)')
+    plt.ylabel('Expected Returns')
+    plt.colorbar(label='Utility')
+    plt.show()
+
+# Example usage
+returns = np.array(returns_data.iloc[0, 1:])  # Adjust indexing if necessary
+cov_matrix = covariance_matrix.values  # Assuming the covariance matrix is correctly formatted
+results, weights = efficient_frontier(returns, cov_matrix)
+plot_efficient_frontier(results)
