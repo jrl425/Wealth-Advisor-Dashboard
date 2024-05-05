@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.expected_returns import mean_historical_return
-from pypfopt.risk_models import CovarianceShrinkage
+from pypfopt.risk_models import sample_cov
 import plotly.graph_objects as go
 
 # Load data
@@ -19,19 +19,23 @@ with st.sidebar:
     st.title("User Preferences")
     risk_aversion = st.slider("Select your risk aversion (1 to 5 scale)", 1, 5, 3)
     leverage = st.slider("Maximum leverage you are willing to take on", 1, 10, 1)
-    uploaded_file = st.file_uploader("Upload a custom list of tickers (CSV)")
 
 # Prepare data
 returns = index_data.set_index('Ticker')['Expected_Annual_Return']
 covariance_matrix = cov_mat.values
 
+# Check if covariance matrix is positive definite
+if np.all(np.linalg.eigvals(covariance_matrix) > 0):
+    st.write("Covariance matrix is positive definite.")
+else:
+    st.write("Covariance matrix is not positive definite.")
+
 # Initialize Efficient Frontier
 ef = EfficientFrontier(returns, covariance_matrix, weight_bounds=(0, 1))
-ef.add_objective(lambda x: risk_aversion * x.T @ covariance_matrix @ x)  # Adding a custom utility function based on risk aversion
 
 # Optimization
 try:
-    raw_weights = ef.max_sharpe(risk_free_rate)
+    weights = ef.max_sharpe(risk_free_rate)
     cleaned_weights = ef.clean_weights()
     performance = ef.portfolio_performance(verbose=True, risk_free_rate=risk_free_rate)
 except Exception as e:
