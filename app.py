@@ -241,11 +241,7 @@ if 'average_final_value' in locals() and average_final_value > 0:
     # Calculate portfolio balances after annual deductions
     for year in range(1, post_retirement_years + 1):
         new_balance = post_retirement_balances[-1] - annual_deduction
-        if new_balance > 0:
-            post_retirement_balances.append(new_balance)
-        else:
-            post_retirement_balances.append(0)
-            break
+        post_retirement_balances.append(max(0, new_balance))
 
     # Create a Plotly graph for the post-retirement portfolio balances
     drawdown_fig = go.Figure()
@@ -254,6 +250,8 @@ if 'average_final_value' in locals() and average_final_value > 0:
         y=post_retirement_balances,
         mode='lines+markers',
         name='Portfolio Balance',
+        text=[f"Age: {retirement_age + i} | Deduction: ${annual_deduction:,}" for i in range(len(post_retirement_balances))],
+        hoverinfo='text',
         marker=dict(color='red')
     ))
     
@@ -265,6 +263,15 @@ if 'average_final_value' in locals() and average_final_value > 0:
     )
     
     st.plotly_chart(drawdown_fig, use_container_width=True)
+
+    # Check and display funding adequacy
+    if post_retirement_balances[-1] == 0 and len(post_retirement_balances) - 1 < post_retirement_years:
+        st.markdown("<h2 style='color:red;'>Need to Invest More</h2>", unsafe_allow_html=True)
+    elif post_retirement_balances[-1] == 0:
+        st.markdown("<h2 style='color:blue;'>Just the Right Amount</h2>", unsafe_allow_html=True)
+    else:
+        st.markdown("<h2 style='color:green;'>Sufficient Funds Until Expected Age</h2>", unsafe_allow_html=True)
+
 else:
     st.error("Portfolio balance data is not available or insufficient to calculate post-retirement drawdown.")
 #################################################################
