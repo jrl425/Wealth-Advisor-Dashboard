@@ -14,7 +14,7 @@ markdown_text = """
 
 Welcome to Don Bowen Advisor’s Online Wealth Management Dashboard! Initiate your investment journey by completing the input survey located on the left side of your screen. Our algorithm will analyze your inputs to craft an investment portfolio tailored precisely to your goals. Visualize your portfolio allocation and explore the distribution of securities within your portfolio. Additionally, witness portfolio growth simulations spanning from your current age to your expected retirement, showcasing the evolution of your investments over time.
 
-#Portfolio Allocation Summary:
+# Portfolio Allocation Summary:
 
 ## Risk Tolerance:
 
