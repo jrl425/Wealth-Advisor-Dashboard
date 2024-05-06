@@ -21,8 +21,10 @@ st.markdown(markdown_text_app)
 
 st.markdown("Meet Our Team")
 st.image("images/jimmy.jpg", caption="Image 1", use_column_width=True)
-st.image("images/danny.jpg", caption="Image 2", use_column_width=True)
-st.image("images/ben.jpg", caption="Image 3", use_column_width=True)
+
+st.image("images/danny.jpg", caption="Image 2")
+
+st.image("images/ben.jpg", caption="Image 3")
 
 
 
