@@ -8,7 +8,7 @@
 import streamlit as st
 
 # Set custom page title
-st.set_page_config(page_title="Platform Overview")
+st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
 
 # Main app (Home page)
 st.title("The Don Bowen Advisors Retirement Planning Dashboard")
