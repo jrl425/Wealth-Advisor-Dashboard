@@ -48,6 +48,8 @@ retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than a
 simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
 annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
 percentage = st.sidebar.number_input("Annual Growth Rate (%):", min_value=0.0, max_value=6.0, value=2.2, step=0.1) / 100
+st.sidebar.subheader("Retirement Simulation Inputs")
+
 
 # Covariance matrix and returns
 covariance_matrix = np.diag(df['Annualized_Std']**2)
