@@ -153,8 +153,8 @@ if result.success:
     simulations = 25
     simulation_results = np.zeros((simulations, num_years))
     
-    # Add sidebar input for annual contribution
-    annual_contribution = st.sidebar.number_input("Enter the annual contribution:", min_value=0, step=100)
+    
+    
 
     for i in range(simulations):
         annual_returns = np.random.normal(port_return, port_volatility, num_years)
