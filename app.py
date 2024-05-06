@@ -56,41 +56,6 @@ st.sidebar.subheader("Retirement Plan")
 
 
 
-
-
-
-# Convert annualized standard deviation to covariance matrix
-covariance_matrix = np.diag(df['Annualized_Std']**2)
-extended_cov_matrix = np.pad(covariance_matrix, ((0, 1), (0, 1)), mode='constant', constant_values=0)
-
-# Extended returns array including the risk-free asset
-extended_returns = np.append(df['Total Expected Return (%)'].values, risk_free_return)
-
-# Initial guess and bounds for the optimization
-initial_guess = np.full(len(extended_returns), 1/len(extended_returns))
-bounds = tuple((0, 1) for _ in range(len(extended_returns)))
-
-# Constraints to ensure the sum of weights is 1
-constraints = ({'type': 'eq', 'fun': lambda weights: np.sum(weights) - 1})
-
-# Portfolio performance calculation function
-def portfolio_performance(weights, returns, covariance_matrix):
-    port_return = np.sum(weights * returns)
-    port_volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
-    return port_return, port_volatility
-
-# Minimize utility function adjusted for risk aversion
-def minimize_function(weights, risk_aversion, returns, covariance_matrix):
-    port_return, port_volatility = portfolio_performance(weights, returns, covariance_matrix)
-    utility = port_return - (risk_aversion / 2) * (port_volatility**2)
-    return -utility
-
-# Optimization process using user-defined risk aversion
-## Commentted code
-result = minimize(minimize_function, initial_guess, args=(risk_aversion, extended_returns, extended_cov_matrix),
-                  method='SLSQP', bounds=bounds, constraints=constraints)
-
-################################################################
 #Graph code 
 risk_level_results = []
 for level, ra in risk_levels.items():
@@ -150,141 +115,175 @@ else:
     st.error("Optimization did not converge")
 
 
-###############################################################
+# Convert annualized standard deviation to covariance matrix
+covariance_matrix = np.diag(df['Annualized_Std']**2)
+extended_cov_matrix = np.pad(covariance_matrix, ((0, 1), (0, 1)), mode='constant', constant_values=0)
 
-#Everything below is portfolio simluation code
-################################################################
-# 
-st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
-st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
-with st.expander("Click to show more"):
-    st.write("""
-    This is the additional text that will be displayed when the expander is clicked.
-    
-    You can add as much text or content here as you want.
-    """)
+# Extended returns array including the risk-free asset
+extended_returns = np.append(df['Total Expected Return (%)'].values, risk_free_return)
 
+# Initial guess and bounds for the optimization
+initial_guess = np.full(len(extended_returns), 1/len(extended_returns))
+bounds = tuple((0, 1) for _ in range(len(extended_returns)))
 
-if result.success:
-    # Generate 25 simulations
-    num_years = retirement_age - age
-    simulation_results = np.zeros((simulations, num_years))
-    
-    # Assume 'percentage' is already defined, if not, define it or set a default value here.
+# Constraints to ensure the sum of weights is 1
+constraints = ({'type': 'eq', 'fun': lambda weights: np.sum(weights) - 1})
 
+# Portfolio performance calculation function
+def portfolio_performance(weights, returns, covariance_matrix):
+    port_return = np.sum(weights * returns)
+    port_volatility = np.sqrt(np.dot(weights.T, np.dot(covariance_matrix, weights)))
+    return port_return, port_volatility
 
-    for i in range(simulations):
-        annual_returns = np.random.normal(port_return, port_volatility, num_years)
-        portfolio_values = [investment_amount * (1 + annual_returns[0])]
-        
-        for j in range(1, num_years):
-            # Update portfolio value for the next year and add annual contribution
-            next_value = (portfolio_values[-1] + annual_contribution) * (1 + annual_returns[j] + percentage)
-            portfolio_values.append(next_value)
-        
-        simulation_results[i] = portfolio_values
+# Minimize utility function adjusted for risk aversion
+def minimize_function(weights, risk_aversion, returns, covariance_matrix):
+    port_return, port_volatility = portfolio_performance(weights, returns, covariance_matrix)
+    utility = port_return - (risk_aversion / 2) * (port_volatility**2)
+    return -utility
 
-    # Create a Plotly graph for the simulations
-    simulation_fig = go.Figure()
+# Optimization process using user-defined risk aversion
+## Commentted code
+result = minimize(minimize_function, initial_guess, args=(risk_aversion, extended_returns, extended_cov_matrix),
+                  method='SLSQP', bounds=bounds, constraints=constraints)
 
-    for i in range(simulations):
-        hover_texts = [f"Age: {age+j} | Return: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
-        simulation_fig.add_trace(go.Scatter(
-            x=list(range(age, retirement_age)),
-            y=simulation_results[i],
-            mode='lines',
-            name=f'Simulation {i+1}',
-            text=hover_texts,
-            hoverinfo='text+x'
-        ))
-
-    simulation_fig.update_layout(
-        title=f"Portfolio Growth Simulations from Age {age} to {retirement_age}",
-        xaxis_title="Age",
-        yaxis_title="Portfolio Value",
-        legend_title="Simulations",
-        hovermode="closest"
-    )
-
-    st.plotly_chart(simulation_fig, use_container_width=True)
-
-    # Collect final portfolio values at retirement age
-    final_values = [sim[-1] for sim in simulation_results]
-
-    # Calculate and display aggregate statistics
-    average_final_value = np.mean(final_values)
-    min_final_value = np.min(final_values)
-    max_final_value = np.max(final_values)
-
-    st.write(f"Average Portfolio Value at Age {retirement_age}: ${average_final_value:,.2f}")
-    st.write(f"Minimum Portfolio Value at Age {retirement_age}: ${min_final_value:,.2f}")
-    st.write(f"Maximum Portfolio Value at Age {retirement_age}: ${max_final_value:,.2f}")
-
-else:
-    st.error("Failed to simulate portfolios. Optimization did not converge.")
-st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 ################################################################
 
 
-#################################################################
-#
+# ###############################################################
 
-# User Inputs for Post-Retirement Planning
-social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
-expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value = 85)
+# #Everything below is portfolio simluation code
+# ################################################################
+# # 
+# st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
+# st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
+# with st.expander("Click to show more"):
+#     st.write("""
+#     This is the additional text that will be displayed when the expander is clicked.
+    
+#     You can add as much text or content here as you want.
+#     """)
 
-if 'average_final_value' in locals() and average_final_value > 0:
-    # Calculate the number of years from retirement to expected death
-    post_retirement_years = expected_lifetime - retirement_age
 
-    # Simulation parameters
-    simulation_results = np.zeros((simulations, post_retirement_years))
+# if result.success:
+#     # Generate 25 simulations
+#     num_years = retirement_age - age
+#     simulation_results = np.zeros((simulations, num_years))
+    
+#     # Assume 'percentage' is already defined, if not, define it or set a default value here.
 
-    # Estimate an initial sustainable annual deduction
-    initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
 
-    # Simulate post-retirement scenarios
-    for i in range(simulations):
-        portfolio_values = [average_final_value]
-        for j in range(1, post_retirement_years):
-            # Calculate next year's balance considering returns, social security, and deductions
-            growth = portfolio_values[-1] * (1 + percentage + np.random.normal(port_return, port_volatility))
-            next_value = growth + social_security_payment - initial_annual_deduction
-            portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
+#     for i in range(simulations):
+#         annual_returns = np.random.normal(port_return, port_volatility, num_years)
+#         portfolio_values = [investment_amount * (1 + annual_returns[0])]
+        
+#         for j in range(1, num_years):
+#             # Update portfolio value for the next year and add annual contribution
+#             next_value = (portfolio_values[-1] + annual_contribution) * (1 + annual_returns[j] + percentage)
+#             portfolio_values.append(next_value)
+        
+#         simulation_results[i] = portfolio_values
 
-        simulation_results[i] = portfolio_values
+#     # Create a Plotly graph for the simulations
+#     simulation_fig = go.Figure()
 
-    # Create a Plotly graph for the post-retirement simulations
-    retirement_fig = go.Figure()
+#     for i in range(simulations):
+#         hover_texts = [f"Age: {age+j} | Return: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
+#         simulation_fig.add_trace(go.Scatter(
+#             x=list(range(age, retirement_age)),
+#             y=simulation_results[i],
+#             mode='lines',
+#             name=f'Simulation {i+1}',
+#             text=hover_texts,
+#             hoverinfo='text+x'
+#         ))
 
-    for i in range(simulations):
-        retirement_fig.add_trace(go.Scatter(
-            x=list(range(retirement_age, expected_lifetime)),
-            y=simulation_results[i],
-            mode='lines',
-            name=f'Simulation {i+1}',
-            hoverinfo='text',
-            text=[f"Age: {retirement_age + j} | Balance: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
-        ))
+#     simulation_fig.update_layout(
+#         title=f"Portfolio Growth Simulations from Age {age} to {retirement_age}",
+#         xaxis_title="Age",
+#         yaxis_title="Portfolio Value",
+#         legend_title="Simulations",
+#         hovermode="closest"
+#     )
 
-    retirement_fig.update_layout(
-        title="Portfolio Balance During Retirement with Annual Withdrawals",
-        xaxis_title="Age",
-        yaxis_title="Portfolio Balance ($)",
-        legend_title="Simulations",
-        hovermode="closest"
-    )
+#     st.plotly_chart(simulation_fig, use_container_width=True)
 
-    st.plotly_chart(retirement_fig, use_container_width=True)
+#     # Collect final portfolio values at retirement age
+#     final_values = [sim[-1] for sim in simulation_results]
 
-    # Calculate and display the mean withdrawal amount that keeps the portfolio balance positive
-    final_balances = [sim[-1] for sim in simulation_results]
-    if all(balance > 0 for balance in final_balances):  # Check if all simulations end with a positive balance
-        st.success(f"Based on simulations, you can safely withdraw up to ${initial_annual_deduction:,.2f} annually.")
-    else:
-        st.error("Reduction in withdrawal amount required to avoid portfolio depletion.")
+#     # Calculate and display aggregate statistics
+#     average_final_value = np.mean(final_values)
+#     min_final_value = np.min(final_values)
+#     max_final_value = np.max(final_values)
 
-else:
-    st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
+#     st.write(f"Average Portfolio Value at Age {retirement_age}: ${average_final_value:,.2f}")
+#     st.write(f"Minimum Portfolio Value at Age {retirement_age}: ${min_final_value:,.2f}")
+#     st.write(f"Maximum Portfolio Value at Age {retirement_age}: ${max_final_value:,.2f}")
 
-#################################################################
+# else:
+#     st.error("Failed to simulate portfolios. Optimization did not converge.")
+# st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
+# ################################################################
+
+
+# #################################################################
+# #
+
+# # User Inputs for Post-Retirement Planning
+# social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
+# expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value = 85)
+
+# if 'average_final_value' in locals() and average_final_value > 0:
+#     # Calculate the number of years from retirement to expected death
+#     post_retirement_years = expected_lifetime - retirement_age
+
+#     # Simulation parameters
+#     simulation_results = np.zeros((simulations, post_retirement_years))
+
+#     # Estimate an initial sustainable annual deduction
+#     initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
+
+#     # Simulate post-retirement scenarios
+#     for i in range(simulations):
+#         portfolio_values = [average_final_value]
+#         for j in range(1, post_retirement_years):
+#             # Calculate next year's balance considering returns, social security, and deductions
+#             growth = portfolio_values[-1] * (1 + percentage + np.random.normal(port_return, port_volatility))
+#             next_value = growth + social_security_payment - initial_annual_deduction
+#             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
+
+#         simulation_results[i] = portfolio_values
+
+#     # Create a Plotly graph for the post-retirement simulations
+#     retirement_fig = go.Figure()
+
+#     for i in range(simulations):
+#         retirement_fig.add_trace(go.Scatter(
+#             x=list(range(retirement_age, expected_lifetime)),
+#             y=simulation_results[i],
+#             mode='lines',
+#             name=f'Simulation {i+1}',
+#             hoverinfo='text',
+#             text=[f"Age: {retirement_age + j} | Balance: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
+#         ))
+
+#     retirement_fig.update_layout(
+#         title="Portfolio Balance During Retirement with Annual Withdrawals",
+#         xaxis_title="Age",
+#         yaxis_title="Portfolio Balance ($)",
+#         legend_title="Simulations",
+#         hovermode="closest"
+#     )
+
+#     st.plotly_chart(retirement_fig, use_container_width=True)
+
+#     # Calculate and display the mean withdrawal amount that keeps the portfolio balance positive
+#     final_balances = [sim[-1] for sim in simulation_results]
+#     if all(balance > 0 for balance in final_balances):  # Check if all simulations end with a positive balance
+#         st.success(f"Based on simulations, you can safely withdraw up to ${initial_annual_deduction:,.2f} annually.")
+#     else:
+#         st.error("Reduction in withdrawal amount required to avoid portfolio depletion.")
+
+# else:
+#     st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
+
+# #################################################################
