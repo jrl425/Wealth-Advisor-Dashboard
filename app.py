@@ -31,14 +31,14 @@ st.sidebar.header("User Inputs for Wealth Management Dashboard")
 st.sidebar.subheader("Portfolio Allocation Inputs")
 #risk_aversion = st.sidebar.slider("Select your portfolio risk level:", 1, 100, 5)
 risk_levels = {
-    "Very Low Risk": 73,
-    "Low Risk": 54,
-    "Medium Risk": 36,
-    "High Risk": 18,
-    "Very High Risk": 1
+    "Very Low": 73,
+    "Low": 54,
+    "Medium": 36,
+    "High": 18,
+    "Very High": 1
 }
 selected_risk_level = st.sidebar.selectbox(
-    "Select your portfolio risk level:",
+    "Select Your Portfolio Risk Tolerance:",
     options=list(risk_levels.keys())
 )
 # Retrieve the integer risk aversion value corresponding to the selected risk level
