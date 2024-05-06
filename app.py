@@ -11,10 +11,10 @@ import streamlit as st
 st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
 
 # Display the image from the images folder
-st.image("images/logo.png", caption="Your Logo Caption", use_column_width=True)
+st.image("images/logo.png", use_column_width=True)
 
 # Main app (Home page)
-st.title("The Don Bowen Advisors Retirement Planning Dashboard")
+st.title("Retirement Planning Dashboard")
 st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("Welcome to the Don Bowen Advisors Dashboard! Use the navigation bar above to switch between different analysis views.")
