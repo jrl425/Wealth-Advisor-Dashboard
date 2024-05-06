@@ -153,7 +153,12 @@ else:
 # 
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
-st.markdown("<p style='font-size:Large; color:black;'>(Put summary here please)</p>", unsafe_allow_html=True)
+with st.expander("Click to show more"):
+    st.write("""
+    This is the additional text that will be displayed when the expander is clicked.
+    
+    You can add as much text or content here as you want.
+    """)
 
 
 if result.success:
