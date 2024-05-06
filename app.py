@@ -228,31 +228,34 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 
 #################################################################
 #
-# User Inputs from Sidebar
-social_security_payment = st.sidebar.number_input("Estimated Social Security Payment Annually:", min_value=0, step=250)
-death_age = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1)
+
+# User Inputs for Post-Retirement Planning
+social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
+expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1)
 
 if 'average_final_value' in locals() and average_final_value > 0:
-    # Number of years from retirement to death age
-    post_retirement_years = death_age - retirement_age
+    # Calculate the number of years from retirement to expected death
+    post_retirement_years = expected_lifetime - retirement_age
+
+    # Simulation parameters
     simulation_results = np.zeros((simulations, post_retirement_years))
 
     # Simulate post-retirement scenarios
     for i in range(simulations):
         portfolio_values = [average_final_value]
         for j in range(1, post_retirement_years):
-            # Calculate next year's balance considering returns, social security, and deductions
-            next_value = (portfolio_values[-1] + social_security_payment - annual_deduction) * (1 + np.random.normal(port_return, port_volatility))
-            portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
+            # Annual growth considering returns, social security, and withdrawals
+            next_value = (portfolio_values[-1] + social_security_payment - annual_deduction) * (1 + percentage + np.random.normal(port_return, port_volatility))
+            portfolio_values.append(max(0, next_value))  # Ensuring balance doesn't go negative
 
         simulation_results[i] = portfolio_values
 
     # Create a Plotly graph for the post-retirement simulations
-    withdrawal_fig = go.Figure()
+    retirement_fig = go.Figure()
 
     for i in range(simulations):
-        withdrawal_fig.add_trace(go.Scatter(
-            x=list(range(retirement_age, death_age)),
+        retirement_fig.add_trace(go.Scatter(
+            x=list(range(retirement_age, expected_lifetime)),
             y=simulation_results[i],
             mode='lines',
             name=f'Simulation {i+1}',
@@ -260,7 +263,7 @@ if 'average_final_value' in locals() and average_final_value > 0:
             text=[f"Age: {retirement_age + j} | Balance: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
         ))
 
-    withdrawal_fig.update_layout(
+    retirement_fig.update_layout(
         title="Portfolio Balance During Retirement with Annual Withdrawals",
         xaxis_title="Age",
         yaxis_title="Portfolio Balance ($)",
@@ -268,7 +271,7 @@ if 'average_final_value' in locals() and average_final_value > 0:
         hovermode="closest"
     )
 
-    st.plotly_chart(withdrawal_fig, use_container_width=True)
+    st.plotly_chart(retirement_fig, use_container_width=True)
 
     # Calculate and display the amount they can withdraw per year
     annual_withdrawals = [np.mean([simulation[y] - simulation[y - 1] for simulation in simulation_results if y > 0]) for y in range(1, post_retirement_years)]
