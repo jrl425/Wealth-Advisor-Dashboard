@@ -34,8 +34,8 @@ selected_risk_level = st.sidebar.selectbox(
 # Retrieve the integer risk aversion value corresponding to the selected risk level
 risk_aversion = risk_levels[selected_risk_level]
 
+investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=500)
 
-investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=1000)
 
 # Convert annualized standard deviation to covariance matrix
 covariance_matrix = np.diag(df['Annualized_Std']**2)
