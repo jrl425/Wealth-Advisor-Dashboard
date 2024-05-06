@@ -112,7 +112,8 @@ st.plotly_chart(fig, use_container_width=True)
 
 ################################################################
 
-
+################################################################
+# Prints out weights
 if result.success:
     port_return, port_volatility = portfolio_performance(result.x, extended_returns, extended_cov_matrix)
     st.write(f"Optimized Portfolio for Risk Aversion {risk_aversion}:")
@@ -123,5 +124,6 @@ if result.success:
 else:
     st.error("Optimization did not converge")
 
-# Optionally, you can include a plot here as well, or any additional analysis or data visualizations.
+
+################################################################
 
