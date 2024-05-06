@@ -167,7 +167,6 @@ with st.expander("Click to show more"):
 if result.success:
     # Generate 25 simulations
     num_years = retirement_age - age
-    simulations = 25
     simulation_results = np.zeros((simulations, num_years))
     
     # Assume 'percentage' is already defined, if not, define it or set a default value here.
