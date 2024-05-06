@@ -43,6 +43,7 @@ investment_amount = st.sidebar.number_input("Enter the amount you want to invest
 age = st.sidebar.number_input("Age: ", min_value=18, step=1)
 retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=28, step=1)
 simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
+annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
 
 
 
@@ -149,14 +150,20 @@ st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p
 if result.success:
     # Generate 25 simulations
     num_years = retirement_age - age
+    simulations = 25
     simulation_results = np.zeros((simulations, num_years))
+    
+    # Add sidebar input for annual contribution
+    annual_contribution = st.sidebar.number_input("Enter the annual contribution:", min_value=0, step=100)
 
     for i in range(simulations):
         annual_returns = np.random.normal(port_return, port_volatility, num_years)
         portfolio_values = [investment_amount * (1 + annual_returns[0])]
         
         for j in range(1, num_years):
-            portfolio_values.append(portfolio_values[-1] * (1 + annual_returns[j]))
+            # Update portfolio value for the next year and add annual contribution
+            next_value = portfolio_values[-1] * (1 + annual_returns[j]) + annual_contribution
+            portfolio_values.append(next_value)
         
         simulation_results[i] = portfolio_values
 
@@ -198,4 +205,5 @@ if result.success:
 
 else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
+
 ################################################################
