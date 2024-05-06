@@ -28,7 +28,7 @@ st.markdown(markdown_text_app)
 
 st.markdown("Meet Our Team")
 # Create three columns for the images
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.beta_columns(3)
 
 # Display the first image in the first column
 with col1:
