@@ -259,7 +259,7 @@ if average_final_value > 0:
             annual_growth_rate = np.random.normal(port_return/100, port_volatility/100)
             growth = portfolio_values[-1] * (1 + annual_growth_rate)
             next_value = growth - annual_deduction + social_security_payment
-            # annual_deduction *= 1.02  # Adjust withdrawal by 2% annually for inflation
+            annual_deduction *= 1.02  # Adjust withdrawal by 2% annually for inflation
             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
         simulation_results[i] = portfolio_values
