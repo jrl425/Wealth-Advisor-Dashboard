@@ -7,6 +7,9 @@
 
 import streamlit as st
 
+# Set custom page title
+st.set_page_config(page_title="Platform Overview")
+
 # Main app (Home page)
 st.title("The Don Bowen Advisors Retirement Planning Dashboard")
 st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
