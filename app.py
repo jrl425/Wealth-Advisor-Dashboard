@@ -226,10 +226,9 @@ else:
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 ################################################################
 
-
+#Everything below is retirement simluation code
 #################################################################
 #
-st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</p>", unsafe_allow_html=True) 
 
 # User Inputs for Post-Retirement Planning
