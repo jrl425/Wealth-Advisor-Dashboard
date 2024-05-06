@@ -51,6 +51,8 @@ age = st.sidebar.number_input("Age: ", min_value=18, step=1)
 retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=28, step=1)
 simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
 annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
+annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
+percentage = st.sidebar.number_input("Enter an Annual Growth Rate:", min_value=0.0, max_value=100.0, step=0.01, format='%f%%')
 st.sidebar.subheader("Retirement Plan")
 expected_age = st.sidebar.number_input("Age you Expect to Live to: ", min_value=retirement_age, step=1)
 annual_deduction = st.sidebar.number_input("Amount You Deduct Annually:", min_value=0, step=250)
@@ -157,22 +159,14 @@ else:
 # 
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
-with st.expander("Click to show more"):
-    st.write("""
-    This is the additional text that will be displayed when the expander is clicked.
-    
-    You can add as much text or content here as you want.
-    """)
-
-
 if result.success:
     # Generate 25 simulations
     num_years = retirement_age - age
     simulations = 25
     simulation_results = np.zeros((simulations, num_years))
     
-    
-    
+    # Assume 'percentage' is already defined, if not, define it or set a default value here.
+    percentage = st.sidebar.number_input("Annual Growth Rate (%):", min_value=0.0, max_value=20.0, value=5.0, step=0.1) / 100
 
     for i in range(simulations):
         annual_returns = np.random.normal(port_return, port_volatility, num_years)
@@ -180,7 +174,7 @@ if result.success:
         
         for j in range(1, num_years):
             # Update portfolio value for the next year and add annual contribution
-            next_value = portfolio_values[-1] * (1 + annual_returns[j]) + annual_contribution
+            next_value = (portfolio_values[-1] + annual_contribution) * (1 + annual_returns[j] + percentage)
             portfolio_values.append(next_value)
         
         simulation_results[i] = portfolio_values
