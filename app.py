@@ -65,18 +65,6 @@ def minimize_function(weights, risk_aversion, returns, covariance_matrix):
 result = minimize(minimize_function, initial_guess, args=(risk_aversion, extended_returns, extended_cov_matrix),
                   method='SLSQP', bounds=bounds, constraints=constraints)
 
-if result.success:
-    port_return, port_volatility = portfolio_performance(result.x, extended_returns, extended_cov_matrix)
-    st.write(f"Optimized Portfolio for Risk Aversion {risk_aversion}:")
-    st.write(f"Expected Return: {port_return:.2%}, Volatility: {port_volatility:.2%}")
-    st.write("Portfolio Weights:")
-    for i, ticker in enumerate(df['Ticker'].tolist() + ['Risk-Free Asset']):
-        st.write(f"{ticker}: {result.x[i]*100:.2f}%")
-else:
-    st.error("Optimization did not converge")
-
-# Optionally, you can include a plot here as well, or any additional analysis or data visualizations.
-
 ################################################################
 #Graph code 
 risk_level_results = []
@@ -123,3 +111,17 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 ################################################################
+
+
+if result.success:
+    port_return, port_volatility = portfolio_performance(result.x, extended_returns, extended_cov_matrix)
+    st.write(f"Optimized Portfolio for Risk Aversion {risk_aversion}:")
+    st.write(f"Expected Return: {port_return:.2%}, Volatility: {port_volatility:.2%}")
+    st.write("Portfolio Weights:")
+    for i, ticker in enumerate(df['Ticker'].tolist() + ['Risk-Free Asset']):
+        st.write(f"{ticker}: {result.x[i]*100:.2f}%")
+else:
+    st.error("Optimization did not converge")
+
+# Optionally, you can include a plot here as well, or any additional analysis or data visualizations.
+
