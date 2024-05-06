@@ -24,7 +24,7 @@ Our portfolio allocation service is guided by your risk preference, determined b
 
 Displayed in this section is a graph illustrating the expected return (y) and volatility (x) of portfolios across various risk levels. Analyze this graphical representation to inform your risk preference, with each plotted point corresponding to a specific risk level. Understand that riskier portfolios offer higher potential returns alongside increased volatility, while our service furnishes precise figures delineating these variations across risk levels.
 
-## Figures Below:
+## Portfolio Weights:
 
 Beneath the graph, discover detailed information regarding the expected returns, volatility, and allocation of securities within your chosen portfolio. Our portfolio service integrates ten renowned market indexes, including SPY, VTI, IVV, QQQ, VXUS, IJH, IJR, VEA, VWO, and DIA. Extensive historical return analysis informs our predictions on the expected returns of these securities.
 
