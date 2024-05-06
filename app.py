@@ -8,10 +8,6 @@ import plotly.graph_objs as go
 # Load the ticker returns data
 df = pd.read_csv('inputs/index_data.csv')
 
-
-st.write("Ticker Returns Data Loaded:")
-st.dataframe(df.head())
-
 #10 year treasury
 risk_free_return = 0.04497
 risk_free_volatility = 0.0
