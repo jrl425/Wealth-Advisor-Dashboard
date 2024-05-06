@@ -17,8 +17,8 @@ risk_free_return = 0.04497
 risk_free_volatility = 0.0
 
 # Sidebar for user inputs
-st.sidebar.header("User Inputs for Wealth Management")
-st.sidebar.subheader("chinese people rock")
+st.sidebar.header("User Inputs for Wealth Management Dashboard")
+st.sidebar.subheader("Portfolio Allocation Inputs")
 #risk_aversion = st.sidebar.slider("Select your portfolio risk level:", 1, 100, 5)
 risk_levels = {
     "Very Low Risk": 73,
@@ -31,10 +31,11 @@ selected_risk_level = st.sidebar.selectbox(
     "Select your portfolio risk level:",
     options=list(risk_levels.keys())
 )
-
 # Retrieve the integer risk aversion value corresponding to the selected risk level
 risk_aversion = risk_levels[selected_risk_level]
 
+
+st.sidebar.subheader("Portfolio Simulation Inputs")
 investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=500)
 
 
