@@ -144,4 +144,43 @@ else:
 # 
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
+
+if result.success:
+    # Generate 5 simulations
+    num_years = retirement_age - age
+    simulations = 5
+    simulation_results = np.zeros((simulations, num_years))
+
+    for i in range(simulations):
+        annual_returns = np.random.normal(port_return, port_volatility, num_years)
+        portfolio_values = [investment_amount * (1 + annual_returns[0])]
+        
+        for j in range(1, num_years):
+            portfolio_values.append(portfolio_values[-1] * (1 + annual_returns[j]))
+        
+        simulation_results[i] = portfolio_values
+
+    # Create a Plotly graph for the simulations
+    simulation_fig = go.Figure()
+
+    for i in range(simulations):
+        simulation_fig.add_trace(go.Scatter(
+            x=list(range(age, retirement_age)),
+            y=simulation_results[i],
+            mode='lines',
+            name=f'Simulation {i+1}'
+        ))
+
+    simulation_fig.update_layout(
+        title=f"Portfolio Growth Simulations from Age {age} to {retirement_age}",
+        xaxis_title="Age",
+        yaxis_title="Portfolio Value",
+        legend_title="Simulations",
+        hovermode="closest"
+    )
+
+    st.plotly_chart(simulation_fig, use_container_width=True)
+
+else:
+    st.error("Failed to simulate portfolios. Optimization did not converge.")
 ################################################################
