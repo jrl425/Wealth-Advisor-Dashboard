@@ -242,6 +242,8 @@ st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</
 # User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
+deduction_pct = st.sidebar.number_input("Anticipated Deduction Percentage:", min_value=0, step=.1, value=2.0)
+
 
 if average_final_value > 0:
     # Calculate the number of years from retirement to expected death
@@ -251,7 +253,7 @@ if average_final_value > 0:
     simulation_results = np.zeros((simulations, post_retirement_years))
 
     # Estimate an initial sustainable annual deduction based on a fixed withdrawal rate
-    initial_annual_deduction = average_final_value * 0.04  # Example: 4% withdrawal rate
+    initial_annual_deduction = average_final_value * (deduction_pct/100)  # Example: 4% withdrawal rate
 
     # Simulate post-retirement scenarios
     for i in range(simulations):
