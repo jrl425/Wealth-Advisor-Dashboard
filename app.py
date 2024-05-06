@@ -240,12 +240,15 @@ if 'average_final_value' in locals() and average_final_value > 0:
     # Simulation parameters
     simulation_results = np.zeros((simulations, post_retirement_years))
 
+    # Estimate an initial sustainable annual deduction based on simple rule
+    initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
+
     # Simulate post-retirement scenarios
     for i in range(simulations):
         portfolio_values = [average_final_value]
         for j in range(1, post_retirement_years):
-            # Annual growth considering returns, social security, and withdrawals
-            next_value = (portfolio_values[-1] + social_security_payment - annual_deduction) * (1 + percentage + np.random.normal(port_return, port_volatility))
+            # Annual growth considering returns, social security, and initial deduction
+            next_value = (portfolio_values[-1] + social_security_payment - initial_annual_deduction) * (1 + percentage + np.random.normal(port_return, port_volatility))
             portfolio_values.append(max(0, next_value))  # Ensuring balance doesn't go negative
 
         simulation_results[i] = portfolio_values
@@ -264,7 +267,7 @@ if 'average_final_value' in locals() and average_final_value > 0:
         ))
 
     retirement_fig.update_layout(
-        title="Portfolio Balance During Retirement with Annual Withdrawals",
+        title="Portfolio Balance During Retirement with Calculated Annual Withdrawals",
         xaxis_title="Age",
         yaxis_title="Portfolio Balance ($)",
         legend_title="Simulations",
@@ -273,11 +276,12 @@ if 'average_final_value' in locals() and average_final_value > 0:
 
     st.plotly_chart(retirement_fig, use_container_width=True)
 
-    # Calculate and display the amount they can withdraw per year
-    annual_withdrawals = [np.mean([simulation[y] - simulation[y - 1] for simulation in simulation_results if y > 0]) for y in range(1, post_retirement_years)]
-    st.write("Annual Withdrawal Amounts Over the Years:")
-    for year, withdrawal in enumerate(annual_withdrawals, start=retirement_age + 1):
-        st.write(f"Age {year}: ${-withdrawal:,.2f}")
+    # Calculate and display the mean withdrawal amount that keeps the portfolio balance positive
+    final_balances = [sim[-1] for sim in simulation_results]
+    if all(balance > 0 for balance in final_balances):  # Check if all simulations end with a positive balance
+        st.success(f"Based on simulations, you can safely withdraw up to ${initial_annual_deduction:,.2f} annually.")
+    else:
+        st.error("Reduction in withdrawal amount required to avoid portfolio depletion.")
 
 else:
     st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
