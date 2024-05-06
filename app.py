@@ -26,6 +26,22 @@ Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and 
 """
 st.markdown(markdown_text_app)
 
+st.markdown("Meet Our Team")
+# Create three columns for the images
+col1, col2, col3 = st.beta_columns(3)
+
+# Display the first image in the first column
+with col1:
+    st.image("Professional Headshot.jpg", caption="Image 1")
+
+# Display the second image in the second column
+with col2:
+    st.image("danny.jpg", caption="Image 2")
+
+# Display the third image in the third column
+with col3:
+    st.image("ben.jpg", caption="Image 3")
+
  
 # # Dashboard Title
 # st.title("The Don Bowen Advisors Retirement Planning Dashboard")
