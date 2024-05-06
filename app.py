@@ -18,24 +18,27 @@ Welcome to the Don Bowen Advisor’s Online Wealth Management Dashboard! This pl
 Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and enthusiasm to this project. With backgrounds in finance and internships in wealth management, we're deeply passionate about empowering individuals to achieve their financial goals. As active investors ourselves, we understand the importance of effective retirement planning. Through this interactive dashboard, we aim to provide users with a comprehensive tool to plan for their retirement confidently and see their financial aspirations become reality.
 """
 st.markdown(markdown_text_app)
+st.image("images/three.png", use_column_width=True)
 
-# Create three columns for the images
-col1, col2, col3 = st.columns(3)
 
-# Specify the desired width for the images (adjust as needed)
-image_width = 200
 
-# Display the first image in the first column
-with col1:
-    st.image("images/jimmy.jpg", caption="Image 1", width=image_width)
+# # Create three columns for the images
+# col1, col2, col3 = st.columns(3)
 
-# Display the second image in the second column
-with col2:
-    st.image("images/danny.jpeg", caption="Image 2", width=image_width)
+# # Specify the desired width for the images (adjust as needed)
+# image_width = 200
 
-# Display the third image in the third column
-with col3:
-    st.image("images/ben.jpg", caption="Image 3", width=image_width)
+# # Display the first image in the first column
+# with col1:
+#     st.image("images/jimmy.jpg", caption="Image 1", width=image_width)
+
+# # Display the second image in the second column
+# with col2:
+#     st.image("images/danny.jpeg", caption="Image 2", width=image_width)
+
+# # Display the third image in the third column
+# with col3:
+#     st.image("images/ben.jpg", caption="Image 3", width=image_width)
 
 
 
