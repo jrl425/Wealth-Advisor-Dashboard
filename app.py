@@ -7,6 +7,20 @@
 
 import streamlit as st
 
+# Define the pages in the sidebar navigation menu
+selected_page = st.sidebar.selectbox("Navigation", ["Retirement Dashboard", "Report"])
+
+# Display the selected page content
+if selected_page == "Retirement Dashboard":
+    # Display content for Retirement Dashboard
+    st.title("Retirement Dashboard")
+    # Your Retirement Dashboard content here
+elif selected_page == "Report":
+    # Display content for Report
+    st.title("Report")
+    # Your Report content here
+
+
 
 # Set custom page title
 st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
