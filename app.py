@@ -183,9 +183,15 @@ if result.success:
 
     # Display final portfolio values at retirement age
     st.write("Final Portfolio Values at Retirement:")
+    final_values = []
     for i in range(simulations):
         final_value = simulation_results[i][-1]
+        final_values.append(final_value)
         st.write(f"Simulation {i+1} Portfolio Value at Year {retirement_age}: ${final_value:,.2f}")
+
+    # Calculate and display the average final portfolio value
+    average_final_value = np.mean(final_values)
+    st.write(f"Average Portfolio Value at Year {retirement_age}: ${average_final_value:,.2f}")
 
 else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
