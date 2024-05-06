@@ -4,6 +4,16 @@ import streamlit as st
 # Set custom page title
 st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
 
+st.markdown(
+    """
+    <style>
+    {% include 'styles.css' %}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # Display the image from the images folder
 st.image("images/logo.png", use_column_width=True)
 
