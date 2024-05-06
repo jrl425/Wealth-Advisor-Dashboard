@@ -229,58 +229,55 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 
 #################################################################
 #
-# Define input for Social Security benefits
-social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=100)
-death_age = st.sidebar.number_input("Expected Age to Plan Until:", min_value=retirement_age, step=1, value=90)
+# User Inputs from Sidebar
+social_security_payment = st.sidebar.number_input("Estimated Social Security Payment Annually:", min_value=0, step=250)
+death_age = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1)
 
-# Check if average_final_value is calculated and available
 if 'average_final_value' in locals() and average_final_value > 0:
-    # Generate the same number of simulations for post-retirement
+    # Number of years from retirement to death age
     post_retirement_years = death_age - retirement_age
-    post_simulation_results = np.zeros((simulations, post_retirement_years))
-    
+    simulation_results = np.zeros((simulations, post_retirement_years))
+
+    # Simulate post-retirement scenarios
     for i in range(simulations):
-        post_portfolio_values = [average_final_value]
+        portfolio_values = [average_final_value]
         for j in range(1, post_retirement_years):
-            # Current year's starting balance
-            current_balance = post_portfolio_values[-1]
-            # Calculate growth for the year including social security benefits
-            growth = (current_balance + social_security_payment) * (1 + percentage)
-            # Deduct annual expenses
-            next_balance = growth - annual_deduction
-            # Ensure balance doesn't drop below zero
-            next_balance = max(next_balance, 0)
-            post_portfolio_values.append(next_balance)
-            
-        post_simulation_results[i] = post_portfolio_values
+            # Calculate next year's balance considering returns, social security, and deductions
+            next_value = (portfolio_values[-1] + social_security_payment - annual_deduction) * (1 + np.random.normal(port_return, port_volatility))
+            portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
+
+        simulation_results[i] = portfolio_values
 
     # Create a Plotly graph for the post-retirement simulations
-    post_simulation_fig = go.Figure()
+    withdrawal_fig = go.Figure()
 
     for i in range(simulations):
-        post_simulation_fig.add_trace(go.Scatter(
+        withdrawal_fig.add_trace(go.Scatter(
             x=list(range(retirement_age, death_age)),
-            y=post_simulation_results[i],
+            y=simulation_results[i],
             mode='lines',
-            name=f'Simulation {i+1}'
+            name=f'Simulation {i+1}',
+            hoverinfo='text',
+            text=[f"Age: {retirement_age + j} | Balance: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
         ))
 
-    post_simulation_fig.update_layout(
-        title="Post-Retirement Portfolio Balances with Social Security Benefits",
+    withdrawal_fig.update_layout(
+        title="Portfolio Balance During Retirement with Annual Withdrawals",
         xaxis_title="Age",
         yaxis_title="Portfolio Balance ($)",
         legend_title="Simulations",
         hovermode="closest"
     )
 
-    st.plotly_chart(post_simulation_fig, use_container_width=True)
+    st.plotly_chart(withdrawal_fig, use_container_width=True)
 
-    # Output the amount of money per year that can be safely deducted
-    # Considering the minimum value at the end of all simulations to be safe
-    min_final_values = np.min([sim[-1] for sim in post_simulation_results])
-    st.write(f"The portfolio sustains an annual deduction of ${annual_deduction:,} until age {death_age} " +
-             f"with an ending balance of ${min_final_values:,.2f}.")
+    # Calculate and display the amount they can withdraw per year
+    annual_withdrawals = [np.mean([simulation[y] - simulation[y - 1] for simulation in simulation_results if y > 0]) for y in range(1, post_retirement_years)]
+    st.write("Annual Withdrawal Amounts Over the Years:")
+    for year, withdrawal in enumerate(annual_withdrawals, start=retirement_age + 1):
+        st.write(f"Age {year}: ${-withdrawal:,.2f}")
+
 else:
-    st.error("Required initial portfolio balance data is missing or invalid. Please ensure all inputs are correct.")
+    st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
 
 #################################################################
