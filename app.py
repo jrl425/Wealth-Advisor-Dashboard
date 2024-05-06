@@ -18,6 +18,7 @@ risk_free_volatility = 0.0
 
 # Sidebar for user inputs
 st.sidebar.header("User Inputs for Wealth Management")
+st.sidebar.subheader("chinese people rock")
 #risk_aversion = st.sidebar.slider("Select your portfolio risk level:", 1, 100, 5)
 risk_levels = {
     "Very Low Risk": 73,
