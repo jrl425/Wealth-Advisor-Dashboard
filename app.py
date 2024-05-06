@@ -232,6 +232,12 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 
 # Streamlit setup for user input
 st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</p>", unsafe_allow_html=True) 
+with st.expander("Click to show more"):
+    st.write("""
+    This is the additional text that will be displayed when the expander is clicked.
+    
+    You can add as much text or content here as you want.
+    """)
 
 # User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
