@@ -231,7 +231,7 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 
 # User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
-expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1)
+expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value = 85)
 
 if 'average_final_value' in locals() and average_final_value > 0:
     # Calculate the number of years from retirement to expected death
