@@ -17,6 +17,19 @@ with st.expander("Click to show more"):
 
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Allocation</p>", unsafe_allow_html=True)
+with st.expander("Click to Learn More About Your Risk Tolerance"):
+    st.write("""
+Very Low: A conservative portfolio with a focus on capital preservation, consisting of 70% risk-free assets and 30% equity.
+
+Low: A moderately conservative portfolio aimed at steady growth, maintaining a balance of risk and return.
+
+Medium: A balanced portfolio with a mix of risk-free assets and equity, suited for investors seeking moderate growth potential with manageable risk consisting of 40% risk-free assets and 60% equity. This is based on the simple investment strategy that allocates 60 percent of your holdings to stocks and 40 percent to bonds. 
+
+High: A growth-oriented portfolio with a significant allocation to equities, suitable for investors comfortable with higher levels of risk in pursuit of potentially higher returns.
+
+Very High: An aggressive portfolio entirely invested in equities, tailored for investors with a high risk tolerance seeking maximum growth potential over the long term.
+
+    """)
 
 # Load the ticker returns data
 df = pd.read_csv('inputs/index_data.csv')
