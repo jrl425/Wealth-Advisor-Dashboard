@@ -51,6 +51,7 @@ age = st.sidebar.number_input("Age: ", min_value=18, step=1)
 retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=28, step=1)
 simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
 annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
+percentage = st.sidebar.number_input("Enter a percentage:", min_value=0.0, max_value=100.0, step=0.01, format='%f%%')
 st.sidebar.subheader("Retirement Plan")
 expected_age = st.sidebar.number_input("Age you Expect to Live to: ", min_value=retirement_age, step=1)
 annual_deduction = st.sidebar.number_input("Amount You Deduct Annually:", min_value=0, step=250)
@@ -172,7 +173,7 @@ if result.success:
     simulation_results = np.zeros((simulations, num_years))
     
     # Assume 'percentage' is already defined, if not, define it or set a default value here.
-    percentage = st.sidebar.number_input("Annual Growth Rate (%):", min_value=0.0, max_value=20.0, value=5.0, step=0.1) / 100
+
 
     for i in range(simulations):
         annual_returns = np.random.normal(port_return, port_volatility, num_years)
