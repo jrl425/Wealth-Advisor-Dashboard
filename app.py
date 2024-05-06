@@ -46,7 +46,7 @@ risk_aversion = risk_levels[selected_risk_level]
 
 
 st.sidebar.subheader("Portfolio Simulation Inputs")
-investment_amount = st.sidebar.number_input("Enter the amount you want to invest:", min_value=1000, step=500)
+investment_amount = st.sidebar.number_input("Initial Investment Amount:", min_value=1000, step=500)
 age = st.sidebar.number_input("Age: ", min_value=18, step=1)
 retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=28, step=1)
 simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
