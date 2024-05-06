@@ -32,7 +32,7 @@ col1, col2, col3 = st.beta_columns(3)
 
 # Display the first image in the first column
 with col1:
-    st.image("images/Professional Headshot.jpg", caption="Image 1")
+    st.image("images/danny.jpg", caption="Image 1")
 
 # Display the second image in the second column
 with col2:
