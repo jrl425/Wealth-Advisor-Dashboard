@@ -7,6 +7,9 @@
 
 import streamlit as st
 
+# Display the image from the images folder
+st.image("images/logo.png", caption="Your Logo Caption", use_column_width=True)
+
 
 # Set custom page title
 st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
