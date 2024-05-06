@@ -7,7 +7,7 @@ import plotly.graph_objs as go
 
 # Add a large title to the dashboard
 st.title("The Don Bowen Advisors", anchor='center')
-st.markdown("<p style='font-size:small; color:red;'>Disclaimer: This is not financial advice.</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: This is not financial advice.</p>", unsafe_allow_html=True)
 
 # Load the ticker returns data
 df = pd.read_csv('inputs/index_data.csv')
