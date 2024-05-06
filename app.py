@@ -53,7 +53,6 @@ simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max
 annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
 percentage = st.sidebar.number_input("Annual Growth Rate (%):", min_value=0.0, max_value=6.0, value=2.2, step=0.1) / 100
 st.sidebar.subheader("Retirement Plan")
-expected_age = st.sidebar.number_input("Age you Expect to Live to: ", min_value=retirement_age, step=1)
 
 
 
