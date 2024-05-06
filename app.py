@@ -237,7 +237,7 @@ st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</
 # User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
-deduction_pct = st.sidebar.number_input("Anticipated Deduction Percentage:", min_value=0, step=1, value=3)
+deduction_pct = st.sidebar.number_input("Anticipated Deduction Percentage:", min_value=0, step=.1, value=2)
 
 
 if average_final_value > 0:
@@ -259,7 +259,7 @@ if average_final_value > 0:
             annual_growth_rate = np.random.normal(port_return/100, port_volatility/100)
             growth = portfolio_values[-1] * (1 + annual_growth_rate)
             next_value = growth - annual_deduction + social_security_payment
-            annual_deduction *= 1.02  # Adjust withdrawal by 2% annually for inflation
+            # annual_deduction *= 1.02  # Adjust withdrawal by 2% annually for inflation
             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
         simulation_results[i] = portfolio_values
