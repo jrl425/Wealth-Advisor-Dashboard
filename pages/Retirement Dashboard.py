@@ -94,7 +94,7 @@ if result.success:
     st.plotly_chart(fig, use_container_width=True)
 
     # Expander for detailed weights
-    with st.expander("Click to show more"):
+    with st.expander("Click to Show Detailed Portfolio Weights"):
         st.write("Detailed Portfolio Weights:")
         for i, ticker in enumerate(labels):
             if weights[i] > 0.01:  # Display only significant weights
