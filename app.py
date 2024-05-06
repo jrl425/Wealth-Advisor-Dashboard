@@ -219,5 +219,5 @@ if result.success:
 
 else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
-
+st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 ################################################################
