@@ -230,22 +230,13 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 #################################################################
 #
 
-
-
-
-import numpy as np
-import streamlit as st
-import plotly.graph_objects as go
-
-# Streamlit setup for user input
 st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</p>", unsafe_allow_html=True) 
 
 # User Inputs for Post-Retirement Planning
-
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
-expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
+expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value = 85)
 
-if average_final_value > 0:
+if 'average_final_value' in locals() and average_final_value > 0:
     # Calculate the number of years from retirement to expected death
     post_retirement_years = expected_lifetime - retirement_age
 
@@ -253,14 +244,14 @@ if average_final_value > 0:
     simulation_results = np.zeros((simulations, post_retirement_years))
 
     # Estimate an initial sustainable annual deduction
-    initial_annual_deduction = average_final_value / post_retirement_years
+    initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
 
     # Simulate post-retirement scenarios
     for i in range(simulations):
         portfolio_values = [average_final_value]
         for j in range(1, post_retirement_years):
             # Calculate next year's balance considering returns, social security, and deductions
-            growth = portfolio_values[-1] * (1 + np.random.normal(port_return, port_volatility))
+            growth = portfolio_values[-1] * (1 + percentage + np.random.normal(port_return, port_volatility))
             next_value = growth + social_security_payment - initial_annual_deduction
             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
@@ -299,73 +290,4 @@ if average_final_value > 0:
 else:
     st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
 
-
-
-
-
-
-
-
-
-
-# st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</p>", unsafe_allow_html=True) 
-
-# # User Inputs for Post-Retirement Planning
-# social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
-# expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value = 85)
-
-# if 'average_final_value' in locals() and average_final_value > 0:
-#     # Calculate the number of years from retirement to expected death
-#     post_retirement_years = expected_lifetime - retirement_age
-
-#     # Simulation parameters
-#     simulation_results = np.zeros((simulations, post_retirement_years))
-
-#     # Estimate an initial sustainable annual deduction
-#     initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
-
-#     # Simulate post-retirement scenarios
-#     for i in range(simulations):
-#         portfolio_values = [average_final_value]
-#         for j in range(1, post_retirement_years):
-#             # Calculate next year's balance considering returns, social security, and deductions
-#             growth = portfolio_values[-1] * (1 + percentage + np.random.normal(port_return, port_volatility))
-#             next_value = growth + social_security_payment - initial_annual_deduction
-#             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
-
-#         simulation_results[i] = portfolio_values
-
-#     # Create a Plotly graph for the post-retirement simulations
-#     retirement_fig = go.Figure()
-
-#     for i in range(simulations):
-#         retirement_fig.add_trace(go.Scatter(
-#             x=list(range(retirement_age, expected_lifetime)),
-#             y=simulation_results[i],
-#             mode='lines',
-#             name=f'Simulation {i+1}',
-#             hoverinfo='text',
-#             text=[f"Age: {retirement_age + j} | Balance: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
-#         ))
-
-#     retirement_fig.update_layout(
-#         title="Portfolio Balance During Retirement with Annual Withdrawals",
-#         xaxis_title="Age",
-#         yaxis_title="Portfolio Balance ($)",
-#         legend_title="Simulations",
-#         hovermode="closest"
-#     )
-
-#     st.plotly_chart(retirement_fig, use_container_width=True)
-
-#     # Calculate and display the mean withdrawal amount that keeps the portfolio balance positive
-#     final_balances = [sim[-1] for sim in simulation_results]
-#     if all(balance > 0 for balance in final_balances):  # Check if all simulations end with a positive balance
-#         st.success(f"Based on simulations, you can safely withdraw up to ${initial_annual_deduction:,.2f} annually.")
-#     else:
-#         st.error("Reduction in withdrawal amount required to avoid portfolio depletion.")
-
-# else:
-#     st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
-
-# #################################################################
+#################################################################
