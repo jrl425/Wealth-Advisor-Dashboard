@@ -47,9 +47,9 @@ st.sidebar.subheader("Portfolio Simulation Inputs")
 investment_amount = st.sidebar.number_input("Initial Investment Amount:", min_value=1000, step=500)
 age = st.sidebar.number_input("Age: ", min_value=18, step=1)
 retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=age+10, step=1)
-simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
-annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
-percentage = st.sidebar.number_input("Annual Growth Rate (%):", min_value=0.0, max_value=6.0, value=2.2, step=0.1) / 100
+simulations = st.sidebar.number_input("Number of Simulations", min_value=50, max_value=150,value=100, step=1)
+annual_contribution = st.sidebar.number_input("Annual Contribution:", min_value=0, step=250)
+percentage = st.sidebar.number_input("Annual Contribution Growth Rate (%):", min_value=0.0, max_value=6.0, value=2.2, step=0.1) / 100
 st.sidebar.subheader("Retirement Simulation Inputs")
 
 
@@ -114,9 +114,12 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
 with st.expander("Click to show more"):
     st.write("""
-    This is the additional text that will be displayed when the expander is clicked.
-    
-    You can add as much text or content here as you want.
+Initial Investment Amount: This input allows you to specify the initial amount of money you want to invest.
+Age: Enter your current age in years.
+Retirement Age (Must be greater than age): Input your expected retirement age. It must be greater than your current age.
+Number of Simulations: Choose the number of simulations to run for portfolio analysis. Due to volatility, each simulation will be different. More simulations mean the model accounts for greater uncertainty, which may help the model be more accurate.
+Annual Contribution: Enter the amount of money you plan to contribute to your investment annually.
+Annual Contribution Growth Rate (%): Set the annual contribution growth rate for your investment portfolio as a percentage. This value is preset to 2.20%, using the 30 year B.I.R. which essentially represents the average annual inflation rate over a 30-year period. 
     """)
 
 
