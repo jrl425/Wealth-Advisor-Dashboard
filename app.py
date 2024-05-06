@@ -91,17 +91,17 @@ if result.success:
     st.write("Portfolio Weights:")
     labels = df['Ticker'].tolist() + ['Risk-Free Asset']
     weights = result.x * 100
+    
+    # Filter out negligible weights
+    filtered_labels = [label for label, weight in zip(labels, weights) if weight > 0.01]
+    filtered_weights = [weight for weight in weights if weight > 0.01]
+    
     # Create a pie chart
-    fig = go.Figure(data=[go.Pie(labels=labels, values=weights, hole=.3)])
+    fig = go.Figure(data=[go.Pie(labels=filtered_labels, values=filtered_weights, hole=.3)])
     fig.update_layout(title_text='Portfolio Allocation')
     st.plotly_chart(fig, use_container_width=True)
 else:
     st.error("Optimization did not converge")
-
-
-
-
-
 
 
 
