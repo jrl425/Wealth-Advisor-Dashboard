@@ -247,7 +247,7 @@ if 'average_final_value' in locals() and average_final_value > 0:
     simulation_results = np.zeros((simulations, post_retirement_years))
 
     # Estimate an initial sustainable annual deduction based on a fixed withdrawal rate
-    initial_annual_deduction = average_final_value * 0.04  # Example: 4% withdrawal rate
+    initial_annual_deduction = average_final_value * deduction_pct  # Example: 4% withdrawal rate
 
     # Simulate post-retirement scenarios
     for i in range(simulations):
