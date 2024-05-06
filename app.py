@@ -164,14 +164,14 @@ if result.success:
     simulation_fig = go.Figure()
 
     for i in range(simulations):
-        hover_text = [f"Age: {age + j} | Return: ${v:,.0f}" if v < 1000000 ]#else f"Age: {age + j} | Return: ${v/1000:.0f}k" for j, v in enumerate(simulation_results[i])]
+        hover_texts = [f"Age: {age+j} | Return: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
         simulation_fig.add_trace(go.Scatter(
             x=list(range(age, retirement_age)),
             y=simulation_results[i],
             mode='lines',
             name=f'Simulation {i+1}',
-            text=hover_text,
-            hoverinfo='text'
+            text=hover_texts,
+            hoverinfo='text+x'
         ))
 
     simulation_fig.update_layout(
