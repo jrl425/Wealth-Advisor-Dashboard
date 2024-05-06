@@ -234,7 +234,6 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 
 
 import numpy as np
-import matplotlib.pyplot as plt
 import streamlit as st
 import plotly.graph_objects as go
 
@@ -242,10 +241,11 @@ import plotly.graph_objects as go
 st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</p>", unsafe_allow_html=True) 
 
 # User Inputs for Post-Retirement Planning
+
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
 
-if 'average_final_value' in locals() and average_final_value > 0:
+if average_final_value > 0:
     # Calculate the number of years from retirement to expected death
     post_retirement_years = expected_lifetime - retirement_age
 
@@ -253,14 +253,14 @@ if 'average_final_value' in locals() and average_final_value > 0:
     simulation_results = np.zeros((simulations, post_retirement_years))
 
     # Estimate an initial sustainable annual deduction
-    initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
+    initial_annual_deduction = average_final_value / post_retirement_years
 
     # Simulate post-retirement scenarios
     for i in range(simulations):
         portfolio_values = [average_final_value]
         for j in range(1, post_retirement_years):
             # Calculate next year's balance considering returns, social security, and deductions
-            growth = portfolio_values[-1] * (1 + percentage + np.random.normal(port_return, port_volatility))
+            growth = portfolio_values[-1] * (1 + np.random.normal(port_return, port_volatility))
             next_value = growth + social_security_payment - initial_annual_deduction
             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
