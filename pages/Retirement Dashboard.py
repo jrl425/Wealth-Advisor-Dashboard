@@ -112,13 +112,18 @@ else:
 
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
-with st.expander("Click to show more"):
+with st.expander("Click to Learn More About Your Inputs"):
     st.write("""
 Initial Investment Amount: This input allows you to specify the initial amount of money you want to invest.
+
 Age: Enter your current age in years.
+
 Retirement Age (Must be greater than age): Input your expected retirement age. It must be greater than your current age.
+
 Number of Simulations: Choose the number of simulations to run for portfolio analysis. Due to volatility, each simulation will be different. More simulations mean the model accounts for greater uncertainty, which may help the model be more accurate.
+
 Annual Contribution: Enter the amount of money you plan to contribute to your investment annually.
+
 Annual Contribution Growth Rate (%): Set the annual contribution growth rate for your investment portfolio as a percentage. This value is preset to 2.20%, using the 30 year B.I.R. which essentially represents the average annual inflation rate over a 30-year period. 
     """)
 
