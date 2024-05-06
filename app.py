@@ -51,6 +51,10 @@ age = st.sidebar.number_input("Age: ", min_value=18, step=1)
 retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=28, step=1)
 simulations = st.sidebar.number_input("Number of Simulations", min_value=10, max_value=50, step=1)
 annual_contribution = st.sidebar.number_input("Amount You Contribute Annually:", min_value=0, step=250)
+st.sidebar.subheader("Jimmy likes fat cock")
+expected_age = st.sidebar.number_input("Age you Expect to Live to: ", min_value=retirement_age, step=1)
+annual_deduction = st.sidebar.number_input("Amount You Deduct Annually:", min_value=0, step=250)
+
 
 
 
@@ -221,3 +225,46 @@ else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 ################################################################
+
+
+#################################################################
+#
+
+# Check if average_final_value is defined and valid for calculations
+if 'average_final_value' in locals() and average_final_value > 0:
+    # Time period from retirement to expected age
+    post_retirement_years = expected_age - retirement_age
+    
+    # Initialize array to store portfolio balances
+    post_retirement_balances = [average_final_value]
+    
+    # Calculate portfolio balances after annual deductions
+    for year in range(1, post_retirement_years + 1):
+        new_balance = post_retirement_balances[-1] - annual_deduction
+        if new_balance > 0:
+            post_retirement_balances.append(new_balance)
+        else:
+            post_retirement_balances.append(0)
+            break
+
+    # Create a Plotly graph for the post-retirement portfolio balances
+    drawdown_fig = go.Figure()
+    drawdown_fig.add_trace(go.Scatter(
+        x=list(range(retirement_age, retirement_age + len(post_retirement_balances))),
+        y=post_retirement_balances,
+        mode='lines+markers',
+        name='Portfolio Balance',
+        marker=dict(color='red')
+    ))
+    
+    drawdown_fig.update_layout(
+        title="Portfolio Balance from Retirement to Expected Age of Death",
+        xaxis_title="Age",
+        yaxis_title="Portfolio Balance ($)",
+        hovermode="closest"
+    )
+    
+    st.plotly_chart(drawdown_fig, use_container_width=True)
+else:
+    st.error("Portfolio balance data is not available or insufficient to calculate post-retirement drawdown.")
+#################################################################
