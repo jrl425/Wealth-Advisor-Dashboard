@@ -148,7 +148,7 @@ st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p
 if result.success:
     # Generate 5 simulations
     num_years = retirement_age - age
-    simulations = 5
+    simulations = 25
     simulation_results = np.zeros((simulations, num_years))
 
     for i in range(simulations):
