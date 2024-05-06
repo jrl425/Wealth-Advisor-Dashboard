@@ -197,17 +197,19 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 
 # Streamlit setup for user input
 st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</p>", unsafe_allow_html=True) 
-with st.expander("Click to show more"):
+with st.expander("Click to Learn More About Your Inputs"):
     st.write("""
-    This is the additional text that will be displayed when the expander is clicked.
-    
-    You can add as much text or content here as you want.
+Estimated Annual Social Security Payment: Input your estimated annual Social Security payment amount.
+
+Expected Age to Live Until: Enter the age you expect to live until. This helps in retirement planning.
+
+Anticipated Annual Withdrawal Rate: Set the anticipated annual withdrawal rate for your retirement funds. Preset to follow the 4% rule.
     """)
 
 # User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
-deduction_pct = (st.sidebar.number_input("Anticipated Annual Withdrawal Rate:", min_value=0.0, step=.10, value=2.0))/100
+deduction_pct = (st.sidebar.number_input("Anticipated Annual Withdrawal Rate:", min_value=0.0, step=.10, value=4.0))/100
 
 
 if 'average_final_value' in locals() and average_final_value > 0:
