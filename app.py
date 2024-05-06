@@ -22,32 +22,21 @@ st.markdown(markdown_text_app)
 # Create three columns for the images
 col1, col2, col3 = st.columns(3)
 
-# Specify the desired width for the circular images (adjust as needed)
+# Specify the desired width for the images (adjust as needed)
 image_width = 200
 
-# Display the first image in the first column with circular mask
+# Display the first image in the first column
 with col1:
-    st.markdown(
-        f'<img src="images/jimmy.jpg" style="width: {image_width}px; height: {image_width}px; border-radius: 50%;">',
-        unsafe_allow_html=True
-    )
-    st.caption("Image 1")
+    st.image("images/jimmy.jpg", caption="Image 1", width=image_width)
 
-# Display the second image in the second column with circular mask
+# Display the second image in the second column
 with col2:
-    st.markdown(
-        f'<img src="images/danny.jpeg" style="width: {image_width}px; height: {image_width}px; border-radius: 50%;">',
-        unsafe_allow_html=True
-    )
-    st.caption("Image 2")
+    st.image("images/danny.jpeg", caption="Image 2", width=image_width)
 
-# Display the third image in the third column with circular mask
+# Display the third image in the third column
 with col3:
-    st.markdown(
-        f'<img src="images/ben.jpg" style="width: {image_width}px; height: {image_width}px; border-radius: 50%;">',
-        unsafe_allow_html=True
-    )
-    st.caption("Image 3")
+    st.image("images/ben.jpg", caption="Image 3", width=image_width)
+
 
 
 
