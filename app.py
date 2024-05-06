@@ -253,12 +253,12 @@ if 'average_final_value' in locals() and average_final_value > 0:
         portfolio_values = [average_final_value]
         for j in range(1, post_retirement_years):
             # Calculate next year's balance considering returns and deductions
-            expected_growth = np.random.normal(port_return, port_volatility)
+            expected_growth = np.random.normal(port_return/100, port_volatility/100)
             growth = portfolio_values[-1] * (1 + expected_growth)
             next_value = growth - initial_annual_deduction + social_security_payment
             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
-            st.write(f"Simulation {i+1}, Year {j}: Expected Growth: {expected_growth}, Growth: {growth}")
+
 
 
         simulation_results[i] = portfolio_values
