@@ -146,7 +146,7 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
 
 if result.success:
-    # Generate 5 simulations
+    # Generate 25 simulations
     num_years = retirement_age - age
     simulations = 25
     simulation_results = np.zeros((simulations, num_years))
@@ -184,17 +184,17 @@ if result.success:
 
     st.plotly_chart(simulation_fig, use_container_width=True)
 
-    # Display final portfolio values at retirement age
-    st.write("Final Portfolio Values at Retirement:")
-    final_values = []
-    for i in range(simulations):
-        final_value = simulation_results[i][-1]
-        final_values.append(final_value)
-        st.write(f"Simulation {i+1} Portfolio Value at Year {retirement_age}: ${final_value:,.2f}")
+    # Collect final portfolio values at retirement age
+    final_values = [sim[-1] for sim in simulation_results]
 
-    # Calculate and display the average final portfolio value
+    # Calculate and display aggregate statistics
     average_final_value = np.mean(final_values)
+    min_final_value = np.min(final_values)
+    max_final_value = np.max(final_values)
+
     st.write(f"Average Portfolio Value at Year {retirement_age}: ${average_final_value:,.2f}")
+    st.write(f"Minimum Portfolio Value at Year {retirement_age}: ${min_final_value:,.2f}")
+    st.write(f"Maximum Portfolio Value at Year {retirement_age}: ${max_final_value:,.2f}")
 
 else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
