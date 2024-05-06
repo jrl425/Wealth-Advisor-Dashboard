@@ -229,34 +229,30 @@ st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 #################################################################
 #
 
+# User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1)
+
 if 'average_final_value' in locals() and average_final_value > 0:
     # Calculate the number of years from retirement to expected death
     post_retirement_years = expected_lifetime - retirement_age
 
     # Simulation parameters
     simulation_results = np.zeros((simulations, post_retirement_years))
-    deductions = []
 
-    # Simulate post-retirement scenarios to find a sustainable deduction
+    # Estimate an initial sustainable annual deduction
+    initial_annual_deduction = average_final_value / (expected_lifetime - retirement_age)
+
+    # Simulate post-retirement scenarios
     for i in range(simulations):
         portfolio_values = [average_final_value]
-        annual_deduction = average_final_value / post_retirement_years  # Initial guess
         for j in range(1, post_retirement_years):
-            # Annual growth considering returns, social security, and deduction
-            next_value = (portfolio_values[-1] + social_security_payment - annual_deduction) * (1 + percentage + np.random.normal(port_return, port_volatility))
-            portfolio_values.append(max(0, next_value))  # Ensuring balance doesn't go negative
-        if portfolio_values[-1] > 0:
-            deductions.append(annual_deduction)  # Only consider deductions that maintain a positive balance
+            # Calculate next year's balance considering returns, social security, and deductions
+            growth = portfolio_values[-1] * (1 + percentage + np.random.normal(port_return, port_volatility))
+            next_value = growth + social_security_payment - initial_annual_deduction
+            portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
         simulation_results[i] = portfolio_values
-
-    # Average deduction that maintains a positive balance
-    if deductions:
-        average_annual_deduction = np.mean(deductions)
-    else:
-        average_annual_deduction = 0
 
     # Create a Plotly graph for the post-retirement simulations
     retirement_fig = go.Figure()
@@ -281,11 +277,12 @@ if 'average_final_value' in locals() and average_final_value > 0:
 
     st.plotly_chart(retirement_fig, use_container_width=True)
 
-    # Display the calculated average annual deduction
-    if average_annual_deduction > 0:
-        st.success(f"Based on simulations, you can safely withdraw up to ${average_annual_deduction:,.2f} annually.")
+    # Calculate and display the mean withdrawal amount that keeps the portfolio balance positive
+    final_balances = [sim[-1] for sim in simulation_results]
+    if all(balance > 0 for balance in final_balances):  # Check if all simulations end with a positive balance
+        st.success(f"Based on simulations, you can safely withdraw up to ${initial_annual_deduction:,.2f} annually.")
     else:
-        st.error("Insufficient funds to sustain withdrawals. Increase savings or reduce expected withdrawals.")
+        st.error("Reduction in withdrawal amount required to avoid portfolio depletion.")
 
 else:
     st.error("Average portfolio balance data is not available or insufficient to calculate retirement withdrawals.")
