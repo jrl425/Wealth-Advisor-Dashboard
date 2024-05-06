@@ -236,6 +236,7 @@ st.markdown("<p style='font-size:xx-Large; color:black;'>Retirement Simulation</
 # User Inputs for Post-Retirement Planning
 social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
+deduction_pct = st.sidebar.number_input("Anticipated Deduction Percentage:", min_value=0, step=1, value=85)
 
 
 if 'average_final_value' in locals() and average_final_value > 0:
