@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 import plotly.graph_objs as go
 
+# Add a large title to the dashboard
+st.title("Jimmy Loves Sammy", anchor='center')
+st.markdown("<p style='font-size:small; color:red;'>Disclaimer: This is not financial advice.</p>", unsafe_allow_html=True)
+
 # Load the ticker returns data
 df = pd.read_csv('inputs/index_data.csv')
 
