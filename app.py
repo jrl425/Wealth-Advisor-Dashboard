@@ -21,7 +21,7 @@ Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and 
 st.markdown(markdown_text_app)
 
 
-st.image("images/three.png", caption = "Jimmy Littley (Finance & BUAN) | Danny Pressler (Finance & BIS) | Ben Ciancio (Finance)", use_column_width=True)
+st.image("images/three.png", caption = "Ben Ciancio (Finance) | Danny Pressler (Finance & BIS) | Jimmy Littley (Finance & BUAN )", use_column_width=True)
 
 
 
