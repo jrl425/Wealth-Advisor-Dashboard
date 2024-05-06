@@ -192,9 +192,9 @@ if result.success:
     min_final_value = np.min(final_values)
     max_final_value = np.max(final_values)
 
-    st.write(f"Average Portfolio Value at Year {retirement_age}: ${average_final_value:,.2f}")
-    st.write(f"Minimum Portfolio Value at Year {retirement_age}: ${min_final_value:,.2f}")
-    st.write(f"Maximum Portfolio Value at Year {retirement_age}: ${max_final_value:,.2f}")
+    st.write(f"Average Portfolio Value at Age {retirement_age}: ${average_final_value:,.2f}")
+    st.write(f"Minimum Portfolio Value at Age {retirement_age}: ${min_final_value:,.2f}")
+    st.write(f"Maximum Portfolio Value at Age {retirement_age}: ${max_final_value:,.2f}")
 
 else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
