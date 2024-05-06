@@ -259,6 +259,9 @@ if 'average_final_value' in locals() and average_final_value > 0:
             next_value = growth - initial_annual_deduction + social_security_payment
             portfolio_values.append(max(0, next_value))  # Ensure balance doesn't go negative
 
+            st.write(f"Simulation {i+1}, Year {j}: Expected Growth: {expected_growth}, Growth: {growth}")
+
+
         simulation_results[i] = portfolio_values
 
     # Create a Plotly graph for the post-retirement simulations
