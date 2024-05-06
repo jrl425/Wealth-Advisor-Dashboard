@@ -1,48 +1,93 @@
-# import streamlit as st
-# import pandas as pd
-# import numpy as np
-# import plotly.graph_objs as go
-# from scipy.optimize import minimize 
-
-
 import streamlit as st
 
-# Set custom page title
+# Set custom page configuration
 st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
-
-# Display the image from the images folder
-st.image("images/logo.png", use_column_width=True)
 
 # Main app (Home page)
 st.title("Retirement Planning Dashboard")
 st.markdown("Welcome to the Don Bowen Advisors Dashboard! Use the navigation bar on the left to switch between different pages.")
 st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
+
+# Display the main logo (ensure you replace 'your_username' and 'repo' with actual GitHub username and repository name)
+logo_url = "https://github.com/jrl425/Wealth-Advisor_Dashboard/blob/main/images/logo.png?raw=true"
+st.image(logo_url, use_column_width=True)
+
 markdown_text_app = """ 
 # Welcome
-Welcome to the Don Bowen Advisor’s Online Wealth Management Dashboard! This platform offers a straightforward approach to investment management, allowing users to input their financial preferences and goals via a simple sidebar interface. Our algorithm then generates a customized investment portfolio designed to match individual risk tolerances and objectives. Visualize your portfolio allocation and explore the securities comprising it. Gain insights into portfolio growth through simulations spanning from your current age to retirement. With a focus on user-friendly design and actionable insights, our dashboard provides a practical tool for investors of all levels to make informed decisions and optimize their financial strategies. Take charge of your financial future today with the Don Bowen Advisor’s Online Wealth Management Dashboard.
+Welcome to the Don Bowen Advisor’s Online Wealth Management Dashboard! This platform offers a straightforward...
 # Our Motivation
-Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and enthusiasm to this project. With backgrounds in finance and internships in wealth management, we're deeply passionate about empowering individuals to achieve their financial goals. As active investors ourselves, we understand the importance of effective retirement planning. Through this interactive dashboard, we aim to provide users with a comprehensive tool to plan for their retirement confidently and see their financial aspirations become reality.
+Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience...
 """
 st.markdown(markdown_text_app)
 
 st.markdown("Meet Our Team")
-# Create three columns for the images
-col1, col2, col3 = st.beta_columns(3)
 
-# Display the first image in the first column
-with col1:
-    st.image("images/danny.jpg", caption="Image 1")
+# Create three columns for the images (update these URLs similarly)
+cols = st.columns(3)
+image_urls = [
+    "https://github.com/jrl425/Wealth-Advisor_Dashboard/blob/main/images/jimmy.jpg?raw=true",
+    "https://github.com/jrl425/Wealth-Advisor_Dashboard/blob/main/images/danny.jpg?raw=true",
+    "https://github.com/jrl425/Wealth-Advisor_Dashboard/blob/main/images/ben.jpg?raw=true"
+]
+captions = ["Jimmy - The Visionary", "Danny - The Strategist", "Ben - The Analyst"]
 
-# Display the second image in the second column
-with col2:
-    st.image("images/danny.jpg", caption="Image 2")
+for col, image_url, caption in zip(cols, image_urls, captions):
+    col.image(image_url, caption=caption)
 
-# Display the third image in the third column
-with col3:
-    st.image("images/ben.jpg", caption="Image 3")
 
- 
+
+# import streamlit as st
+
+# # Set custom page title
+# st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
+
+# # Display the image from the images folder
+# st.image("images/logo.png", use_column_width=True)
+
+# # Main app (Home page)
+# st.title("Retirement Planning Dashboard")
+# st.markdown("Welcome to the Don Bowen Advisors Dashboard! Use the navigation bar on the left to switch between different pages.")
+# st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
+# st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
+# markdown_text_app = """ 
+# # Welcome
+# Welcome to the Don Bowen Advisor’s Online Wealth Management Dashboard! This platform offers a straightforward approach to investment management, allowing users to input their financial preferences and goals via a simple sidebar interface. Our algorithm then generates a customized investment portfolio designed to match individual risk tolerances and objectives. Visualize your portfolio allocation and explore the securities comprising it. Gain insights into portfolio growth through simulations spanning from your current age to retirement. With a focus on user-friendly design and actionable insights, our dashboard provides a practical tool for investors of all levels to make informed decisions and optimize their financial strategies. Take charge of your financial future today with the Don Bowen Advisor’s Online Wealth Management Dashboard.
+# # Our Motivation
+# Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and enthusiasm to this project. With backgrounds in finance and internships in wealth management, we're deeply passionate about empowering individuals to achieve their financial goals. As active investors ourselves, we understand the importance of effective retirement planning. Through this interactive dashboard, we aim to provide users with a comprehensive tool to plan for their retirement confidently and see their financial aspirations become reality.
+# """
+# st.markdown(markdown_text_app)
+
+# st.markdown("Meet Our Team")
+# # Create three columns for the images
+# col1, col2, col3 = st.beta_columns(3)
+
+# # Display the first image in the first column
+# with col1:
+#     st.image("images/danny.jpg", caption="Image 1")
+
+# # Display the second image in the second column
+# with col2:
+#     st.image("images/danny.jpg", caption="Image 2")
+
+# # Display the third image in the third column
+# with col3:
+#     st.image("images/ben.jpg", caption="Image 3")
+
+
+
+
+
+
+
+
+
+# import streamlit as st
+# import pandas as pd
+# import numpy as np
+# import plotly.graph_objs as go
+# from scipy.optimize import minimize 
+
 # # Dashboard Title
 # st.title("The Don Bowen Advisors Retirement Planning Dashboard")
 # st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
