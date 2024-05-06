@@ -171,8 +171,8 @@ if result.success:
     simulations = 25
     simulation_results = np.zeros((simulations, num_years))
     
-    
-    
+    # Assume 'percentage' is already defined, if not, define it or set a default value here.
+    percentage = st.sidebar.number_input("Annual Growth Rate (%):", min_value=0.0, max_value=20.0, value=5.0, step=0.1) / 100
 
     for i in range(simulations):
         annual_returns = np.random.normal(port_return, port_volatility, num_years)
@@ -180,7 +180,7 @@ if result.success:
         
         for j in range(1, num_years):
             # Update portfolio value for the next year and add annual contribution
-            next_value = portfolio_values[-1] * (1 + annual_returns[j]) + annual_contribution
+            next_value = (portfolio_values[-1] + annual_contribution) * (1 + annual_returns[j] + percentage)
             portfolio_values.append(next_value)
         
         simulation_results[i] = portfolio_values
