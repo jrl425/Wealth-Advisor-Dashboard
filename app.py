@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 from scipy.optimize import minimize
 
 # Dashboard Title
-st.title("The Don Bowen Advisors")
+st.title("The Don Bowen Advisors Retirement Planning Dashboard")
 st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
 
 # Dashboard expanders for additional information
