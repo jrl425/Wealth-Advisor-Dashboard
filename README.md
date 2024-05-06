@@ -2,7 +2,7 @@
 
 
 
-[You can see this dashboard in action here!]([https://donbowen-portfolio-frontier-streamlit-dashboard-app-yentvd.streamlit.app/](https://wealth-advisor-dashboard-zxeuck5wssugu23mf7cjon.streamlit.app/))
+[You can see this dashboard in action here!](https://wealth-advisor-dashboard-zxeuck5wssugu23mf7cjon.streamlit.app/)
 
 ## How to 
 
