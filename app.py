@@ -181,6 +181,12 @@ if result.success:
 
     st.plotly_chart(simulation_fig, use_container_width=True)
 
+    # Display final portfolio values at retirement age
+    st.write("Final Portfolio Values at Retirement:")
+    for i in range(simulations):
+        final_value = simulation_results[i][-1]
+        st.write(f"Simulation {i+1} Portfolio Value at Year {retirement_age}: ${final_value:,.2f}")
+
 else:
     st.error("Failed to simulate portfolios. Optimization did not converge.")
 ################################################################
