@@ -19,29 +19,23 @@ Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and 
 """
 st.markdown(markdown_text_app)
 
-st.markdown("Meet Our Team")
-st.image("images/jimmy.jpg", caption="Image 1", use_column_width=True)
-
-st.image("images/danny.jpeg", caption="Image 2")
-
-st.image("images/ben.jpg", caption="Image 3")
-
-
 # Create three columns for the images
 col1, col2, col3 = st.columns(3)
 
+# Specify the desired width for the images (adjust as needed)
+image_width = 200
+
 # Display the first image in the first column
 with col1:
-    st.image("images/jimmy.jpg", caption="Image 1")
+    st.image("images/jimmy.jpg", caption="Image 1", width=image_width)
 
 # Display the second image in the second column
 with col2:
-    st.image("images/danny.jpeg", caption="Image 2")
+    st.image("images/danny.jpeg", caption="Image 2", width=image_width)
 
 # Display the third image in the third column
 with col3:
-    st.image("images/ben.jpg", caption="Image 3")
-
+    st.image("images/ben.jpg", caption="Image 3", width=image_width)
 
 
 
