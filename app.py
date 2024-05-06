@@ -7,6 +7,8 @@
 
 import streamlit as st
 
+st.sidebar.title("Project Overview")
+
 # Set custom page title
 st.set_page_config(page_title="The Don Bowen Advisors Retirement Planning Dashboard")
 
