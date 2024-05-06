@@ -255,7 +255,7 @@ if average_final_value > 0:
         annual_deduction = initial_annual_deduction
         for j in range(1, post_retirement_years):
             # Calculate next year's balance considering returns and deductions
-            annual_growth_rate = np.random.normal(port_return, port_volatility)
+            annual_growth_rate = np.random.normal(port_return/100, port_volatility/100)
             growth = portfolio_values[-1] * (1 + annual_growth_rate)
             next_value = growth - annual_deduction + social_security_payment
             annual_deduction *= 1.02  # Adjust withdrawal by 2% annually for inflation
