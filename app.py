@@ -18,14 +18,13 @@ st.title("Retirement Planning Dashboard")
 st.markdown("Welcome to the Don Bowen Advisors Dashboard! Use the navigation bar on the left to switch between different pages.")
 st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
-st.markdown(
- # Welcome
- "Welcome to the Don Bowen Advisor’s Online Wealth Management Dashboard! This platform offers a straightforward approach to investment management, allowing users to input their financial preferences and goals via a simple sidebar interface. Our algorithm then generates a customized investment portfolio designed to match individual risk tolerances and objectives. Visualize your portfolio allocation and explore the securities comprising it. Gain insights into portfolio growth through simulations spanning from your current age to retirement. With a focus on user-friendly design and actionable insights, our dashboard provides a practical tool for investors of all levels to make informed decisions and optimize their financial strategies. Take charge of your financial future today with the Don Bowen Advisor’s Online Wealth Management Dashboard.
- # Our Motivation
- Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and enthusiasm to this project. With backgrounds in finance and internships in wealth management, we're deeply passionate about empowering individuals to achieve their financial goals. As active investors ourselves, we understand the importance of effective retirement planning. Through this interactive dashboard, we aim to provide users with a comprehensive tool to plan for their retirement confidently and see their financial aspirations become reality.
- 
-           
-           ")
+markdown_text_app = """ 
+# Welcome
+Welcome to the Don Bowen Advisor’s Online Wealth Management Dashboard! This platform offers a straightforward approach to investment management, allowing users to input their financial preferences and goals via a simple sidebar interface. Our algorithm then generates a customized investment portfolio designed to match individual risk tolerances and objectives. Visualize your portfolio allocation and explore the securities comprising it. Gain insights into portfolio growth through simulations spanning from your current age to retirement. With a focus on user-friendly design and actionable insights, our dashboard provides a practical tool for investors of all levels to make informed decisions and optimize their financial strategies. Take charge of your financial future today with the Don Bowen Advisor’s Online Wealth Management Dashboard.
+# Our Motivation
+Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and enthusiasm to this project. With backgrounds in finance and internships in wealth management, we're deeply passionate about empowering individuals to achieve their financial goals. As active investors ourselves, we understand the importance of effective retirement planning. Through this interactive dashboard, we aim to provide users with a comprehensive tool to plan for their retirement confidently and see their financial aspirations become reality.
+"""
+st.markdown(markdown_text_app)
 
  
 # # Dashboard Title
