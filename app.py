@@ -86,8 +86,9 @@ def minimize_function(weights, risk_aversion, returns, covariance_matrix):
     return -utility
 
 # Optimization process using user-defined risk aversion
-result = minimize(minimize_function, initial_guess, args=(risk_aversion, extended_returns, extended_cov_matrix),
-                  method='SLSQP', bounds=bounds, constraints=constraints)
+## Commentted code
+# result = minimize(minimize_function, initial_guess, args=(risk_aversion, extended_returns, extended_cov_matrix),
+#                   method='SLSQP', bounds=bounds, constraints=constraints)
 
 ################################################################
 #Graph code 
