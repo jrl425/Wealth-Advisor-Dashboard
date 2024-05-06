@@ -19,21 +19,24 @@ Our team, comprised of Jimmy, Ben, and Danny, brings a wealth of experience and 
 """
 st.markdown(markdown_text_app)
 
-from PIL import Image
-import streamlit as st
+# Create three columns for the images
+col1, col2, col3 = st.columns(3)
 
-# Define the desired height for the images (adjust as needed)
-image_height = 200
+# Specify the desired width for the images (adjust as needed)
+image_width = 200
 
-# Load and resize the images
-image1 = Image.open("images/jimmy.jpg").resize((int(image_height * 16 / 9), image_height))
-image2 = Image.open("images/danny.jpeg").resize((int(image_height * 16 / 9), image_height))
-image3 = Image.open("images/ben.jpg").resize((int(image_height * 16 / 9), image_height))
+# Display the first image in the first column
+with col1:
+    st.image("images/jimmy.jpg", caption="Image 1", width=image_width)
 
-# Display the resized images
-st.image(image1, caption="Image 1", use_column_width=False)
-st.image(image2, caption="Image 2", use_column_width=False)
-st.image(image3, caption="Image 3", use_column_width=False)
+# Display the second image in the second column
+with col2:
+    st.image("images/danny.jpeg", caption="Image 2", width=image_width)
+
+# Display the third image in the third column
+with col3:
+    st.image("images/ben.jpg", caption="Image 3", width=image_width)
+
 
 
 
