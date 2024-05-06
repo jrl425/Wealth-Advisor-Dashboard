@@ -8,7 +8,12 @@ import plotly.graph_objs as go
 # Add a large title to the dashboard
 st.title("The Don Bowen Advisors", anchor='center')
 st.markdown("<p style='font-size:medium; color:red;'>Disclaimer: The content provided on this site is for educational purposes only and should not be considered as financial advice; users are encouraged to consult with a qualified financial advisor before making any investment decisions.</p>", unsafe_allow_html=True)
-st.markdown("<p style='font-size:Large; color:black;'>(Put summary here please)</p>", unsafe_allow_html=True)
+with st.expander("Click to show more"):
+    st.write("""
+    This is the additional text that will be displayed when the expander is clicked.
+    
+    You can add as much text or content here as you want.
+    """)
 st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
 st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Allocation</p>", unsafe_allow_html=True)
 with st.expander("Click to show more"):
