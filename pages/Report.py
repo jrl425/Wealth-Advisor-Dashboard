@@ -52,3 +52,8 @@ The data was retrieved from Yahoo Finance using its built-in Python function. Th
 # Render the Markdown content
 st.markdown(markdown_text)
 
+with st.expander("Egg"):
+    st.image("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnBlc3BwcHZ1dXZ2eGhzYXlqcGV6MzA3c3pzcmxjazl0OHJuaGYwcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LdOyjZ7io5Msw/giphy.gif", caption="You when you use Don Bowen Advisors Retirement Dashboard", use_column_width=True)
+
+    )
+
