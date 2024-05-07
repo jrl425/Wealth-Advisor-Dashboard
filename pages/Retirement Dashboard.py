@@ -102,30 +102,6 @@ if result.success:
 else:
     st.error("Optimization did not converge")
     
-#
-###############################################################
-
-#Everything below is portfolio simluation code
-
-################################################################
-# 
-
-st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
-st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
-with st.expander("Click to Learn More About Your Inputs"):
-    st.write("""
-Initial Investment Amount: This input allows you to specify the initial amount of money you want to invest.
-
-Age: Enter your current age in years.
-
-Retirement Age (Must be greater than age): Input your expected retirement age. It must be greater than your current age.
-
-Number of Simulations: Choose the number of simulations to run for portfolio analysis. Due to volatility, each simulation will be different. More simulations mean the model accounts for greater uncertainty, which may help the model be more accurate.
-
-Annual Contribution: Enter the amount of money you plan to contribute to your investment annually.
-
-Annual Contribution Growth Rate (%): Set the annual contribution growth rate for your investment portfolio as a percentage. This value is preset to 2.20%, using the 30 year B.I.R. which essentially represents the average annual inflation rate over a 30-year period. 
-    """)
 with st.expander("Click to Learn More About These Securities"):
     st.write("""
 SPY: Tracks the performance of the S&P 500 Index, representing 500 of the largest publicly traded companies in the United States.
@@ -150,6 +126,31 @@ DIA: Tracks the performance of the Dow Jones Industrial Average, representing 30
 
 Risk Free Rate: The 10-year Treasury is a government bond issued by the United States Department of the Treasury with a fixed interest rate and a maturity of 10 years, commonly used as a benchmark for long-term interest rates and as a safe-haven investment.
 """)
+    
+#
+###############################################################
+
+#Everything below is portfolio simluation code
+
+################################################################
+# 
+
+st.markdown("<hr style='border: 2px solid black;'>", unsafe_allow_html=True)
+st.markdown("<p style='font-size:xx-Large; color:black;'>Portfolio Simulation</p>", unsafe_allow_html=True)
+with st.expander("Click to Learn More About Your Inputs"):
+    st.write("""
+Initial Investment Amount: This input allows you to specify the initial amount of money you want to invest.
+
+Age: Enter your current age in years.
+
+Retirement Age (Must be greater than age): Input your expected retirement age. It must be greater than your current age.
+
+Number of Simulations: Choose the number of simulations to run for portfolio analysis. Due to volatility, each simulation will be different. More simulations mean the model accounts for greater uncertainty, which may help the model be more accurate.
+
+Annual Contribution: Enter the amount of money you plan to contribute to your investment annually.
+
+Annual Contribution Growth Rate (%): Set the annual contribution growth rate for your investment portfolio as a percentage. This value is preset to 2.20%, using the 30 year B.I.R. which essentially represents the average annual inflation rate over a 30-year period. 
+    """)
 
 
 if result.success:
