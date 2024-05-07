@@ -46,9 +46,9 @@ risk_aversion = risk_levels[selected_risk_level]
 st.sidebar.subheader("Portfolio Simulation Inputs")
 investment_amount = st.sidebar.number_input("Initial Investment Amount:", min_value=1000, step=500)
 age = st.sidebar.number_input("Age: ", min_value=18, step=1)
-retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=age+10, step=1)
+retirement_age = st.sidebar.number_input("Retirement Age (Must be greater than age): ", min_value=age+10, value=60, step=1)
 simulations = st.sidebar.number_input("Number of Simulations", min_value=50, max_value=150,value=100, step=1)
-annual_contribution = st.sidebar.number_input("Annual Contribution:", min_value=0, step=250)
+annual_contribution = st.sidebar.number_input("Annual Contribution:", min_value=0, value=2500, step=250)
 percentage = st.sidebar.number_input("Annual Contribution Growth Rate (%):", min_value=0.0, max_value=6.0, value=2.2, step=0.1) / 100
 st.sidebar.subheader("Retirement Simulation Inputs")
 
@@ -207,7 +207,7 @@ Anticipated Annual Withdrawal Rate: Set the anticipated annual withdrawal rate f
     """)
 
 # User Inputs for Post-Retirement Planning
-social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, step=250)
+social_security_payment = st.sidebar.number_input("Estimated Annual Social Security Payment:", min_value=0, value=15000, step=250)
 expected_lifetime = st.sidebar.number_input("Expected Age to Live Until:", min_value=retirement_age, step=1, value=85)
 deduction_pct = (st.sidebar.number_input("Anticipated Annual Withdrawal Rate:", min_value=0.0, step=.10, value=4.0))/100
 
