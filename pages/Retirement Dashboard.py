@@ -176,7 +176,7 @@ if result.success:
     simulation_fig = go.Figure()
 
     for i in range(simulations):
-        hover_texts = [f"Age: {age+j} | Portfolio Value: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
+        hover_texts = [f"Age: {age+j} | Value: ${round(val, -2):,.0f}" for j, val in enumerate(simulation_results[i])]
         simulation_fig.add_trace(go.Scatter(
             x=list(range(age, retirement_age)),
             y=simulation_results[i],
