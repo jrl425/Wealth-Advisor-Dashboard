@@ -42,10 +42,10 @@ Upon completing the Portfolio Simulation inputs, a graph showcasing the specifie
 
 At Don Bowen Advisors, we recognize that portfolio management extends beyond retirement. Hence, our platform offers a retirement planning feature where users can input their estimated social security payment, life expectancy, and anticipated deduction percentage. A graph depicting portfolio balance throughout retirement is presented, alongside the safe annual withdrawal amount, empowering users to navigate their retirement journey with confidence.
 
-# Code Overview
+# Code Overview:
 This Streamlit application serves as a comprehensive financial planning tool, designed to assist users in making informed investment decisions and preparing for retirement. It leverages various Python libraries, including Streamlit for the user interface, Pandas for data manipulation, NumPy for numerical computations, Plotly for data visualization, and SciPy for optimization. The application begins by elucidating different risk tolerance levels and their implications on portfolio composition. It then employs historical market data to compute the optimal allocation of investments based on user-provided parameters such as initial investment, age, retirement age, and annual contribution. Utilizing SciPy's optimization capabilities, the application determines an investment strategy that maximizes returns while managing risk effectively. Subsequently, it conducts simulations to forecast portfolio growth over time, providing users with insights into the potential outcomes of their investment decisions. Furthermore, the application extends its functionality to retirement planning, allowing users to input parameters such as expected Social Security payments, life expectancy, and desired annual withdrawal rates. Through thorough analysis and simulation, users gain valuable insights to make prudent financial decisions aligned with their long-term goals.
 
-# Data Overview
+# Data Overview:
 The data was retrieved from Yahoo Finance using its built-in Python function. This data was then utilized to compute a 10-year average, which served as our expected return projections. Similarly, volatility was calculated based on this data. Additionally, we incorporated the annual dividend yield for each security into our analysis.
 """
 
