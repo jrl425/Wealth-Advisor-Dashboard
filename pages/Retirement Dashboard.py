@@ -200,7 +200,7 @@ if result.success:
     final_values = [sim[-1] for sim in simulation_results]
 
     # Calculate and display aggregate statistics
-    average_final_value = np.mean(final_values)
+    average_final_value = np.median(final_values)
     min_final_value = np.min(final_values)
     max_final_value = np.max(final_values)
 
