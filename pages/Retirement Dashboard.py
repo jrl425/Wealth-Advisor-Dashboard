@@ -126,6 +126,30 @@ Annual Contribution: Enter the amount of money you plan to contribute to your in
 
 Annual Contribution Growth Rate (%): Set the annual contribution growth rate for your investment portfolio as a percentage. This value is preset to 2.20%, using the 30 year B.I.R. which essentially represents the average annual inflation rate over a 30-year period. 
     """)
+with st.expander("Click to Learn More About These Securities"):
+    st.write("""
+SPY: Tracks the performance of the S&P 500 Index, representing 500 of the largest publicly traded companies in the United States.
+
+VTI: Provides exposure to the entire U.S. stock market, comprising large, mid, and small-cap stocks.
+
+IVV: Offers investors exposure to the S&P 500 Index, consisting of large-cap U.S. stocks.
+
+QQQ: Focuses on tracking the performance of the Nasdaq-100 Index, composed of 100 of the largest non-financial companies listed on the Nasdaq Stock Market.
+
+VXUS: Diversifies investment across international developed and emerging markets outside of the United States.
+
+IJH: Tracks the performance of mid-cap U.S. stocks, providing exposure to companies with market capitalizations between those of large and small-cap stocks.
+
+IJR: Offers exposure to small-cap U.S. stocks, representing companies with smaller market capitalizations.
+
+VEA: Invests in developed markets outside of the United States, excluding Canada and the U.S.
+
+VWO: Provides exposure to emerging market equities, comprising stocks from countries with developing economies.
+
+DIA: Tracks the performance of the Dow Jones Industrial Average, representing 30 large-cap U.S. stocks.
+
+Risk Free Rate: The 10-year Treasury is a government bond issued by the United States Department of the Treasury with a fixed interest rate and a maturity of 10 years, commonly used as a benchmark for long-term interest rates and as a safe-haven investment.
+""")
 
 
 if result.success:
